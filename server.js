@@ -7,10 +7,12 @@ const PORT = 3000;
 
 // 🔧 Middlewares
 app.use(express.json());
-app.use(express.static("public"));
+
+// ✅ Corrigido: serve arquivos estáticos corretamente
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(session({
-  secret: "minha_chave_secreta_aleatoria",  // 🔐 substitua por algo seguro
+  secret: "minha_chave_secreta_aleatoria", // 🔐 substitua por algo seguro
   resave: false,
   saveUninitialized: false,
   cookie: {

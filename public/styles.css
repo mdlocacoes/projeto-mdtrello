@@ -11,6 +11,80 @@ body.dark-mode {
   color: #eee;
 }
 
+/* 🌇 Página inicial estilizada */
+body.landing-page {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #026aa7, #00bcd4);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  padding: 2rem;
+  transition: background 0.3s ease;
+}
+body.landing-page.dark-mode {
+  background: linear-gradient(135deg, #1f1f1f, #333);
+}
+
+.container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+.subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.btn.primary {
+  background-color: #ffffff;
+  color: #026aa7;
+}
+.btn.secondary {
+  background-color: #222;
+  color: #fff;
+}
+body.landing-page.dark-mode .btn.primary {
+  background-color: #eee;
+  color: #026aa7;
+}
+body.landing-page.dark-mode .btn.secondary {
+  background-color: #444;
+  color: #fff;
+}
+
+/* 📱 Responsivo */
+@media (max-width: 600px) {
+  .container h1 {
+    font-size: 2rem;
+  }
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
 /* 🧭 Menu superior */
 .topbar {
   display: flex;
@@ -287,5 +361,33 @@ body.dark-mode .modal-content {
 }
 body.dark-mode .modal-content {
   background: #2c2c2c;
+  color: white;
+}
+
+.form-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-box input {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.form-box input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.5);
+}
+
+body.dark-mode .form-box input {
+  background-color: #333;
   color: white;
 }

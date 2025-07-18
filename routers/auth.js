@@ -23,9 +23,9 @@ router.post("/register", (req, res) => {
     );
     req.session.user = username;
     console.log("Novo usuário cadastrado:", username);
-    res.json({ success: true });
+    res.redirect("/"); // redireciona após cadastro
   } catch (err) {
-    res.json({ success: false, message: "Usuário já existe." });
+    res.redirect("/register.html?erro=1"); // usuário já existe
   }
 });
 
@@ -36,9 +36,9 @@ router.post("/login", (req, res) => {
   if (user) {
     req.session.user = username;
     console.log("Login bem-sucedido para:", username);
-    res.json({ success: true });
+    res.redirect("/");
   } else {
-    res.json({ success: false, message: "Usuário ou senha incorretos." });
+    res.redirect("/login.html?erro=1");
   }
 });
 
@@ -54,7 +54,7 @@ router.get("/logout", (req, res) => {
   });
 });
 
-// 💾 Salvar quadros (com dados completos dos cartões)
+// 💾 Salvar quadros
 router.post("/save-projects", exigirLogin, (req, res) => {
   const { projects } = req.body;
   const username = req.session.user;

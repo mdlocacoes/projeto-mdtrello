@@ -1,93 +1,41 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Login - Mini Trello</title>
-  <meta name="description" content="Acesse seus quadros pessoais estilo Trello" />
-  <meta name="author" content="Bruno" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Mini Trello</title>
 
-  <!-- Ícone e PWA -->
-  <link rel="icon" type="image/png" href="icons/favicon.png" />
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#0077cc" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Estilos -->
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Estilo principal -->
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-  <!-- Botão tema -->
-  <button onclick="toggleTheme()" class="theme-button">🌙 Tema</button>
+<body class="landing-page">
+  <div class="container">
+    <h1><i class="fa-solid fa-right-to-bracket"></i> Login</h1>
+    <p class="subtitle">Acesse sua conta para organizar suas tarefas</p>
 
-  <!-- Avatar (se logado previamente) -->
-  <div id="avatar">?</div>
+    <form method="POST" action="/login" class="form-box">
+      <input type="text" name="username" placeholder="Usuário" required />
+      <input type="password" name="password" placeholder="Senha" required />
+      <button type="submit" class="btn primary"><i class="fa-solid fa-arrow-right"></i> Entrar</button>
+    </form>
 
-  <header>
-    <h1>Mini Trello</h1>
-  </header>
-
-  <main>
-    <section class="login-section">
-      <form id="loginForm">
-        <h2>Login</h2>
-        <input type="text" id="username" placeholder="Usuário" required />
-        <input type="password" id="password" placeholder="Senha" required />
-        <button type="submit">Entrar</button>
-      </form>
-      <div id="loginStatus"></div>
-    </section>
-    <p style="text-align:center;">
-      <a href="register.html">→ Não tem conta? Cadastre-se</a>
-    </p>
-  </main>
+    <div class="actions">
+      <a href="register.html" class="btn secondary"><i class="fa-solid fa-user-plus"></i> Cadastrar</a>
+      <a href="/" class="btn secondary"><i class="fa-solid fa-house"></i> Voltar</a>
+    </div>
+  </div>
 
   <script>
-    // Tema escuro
-    function toggleTheme() {
-      document.body.classList.toggle("dark-mode");
-      const theme = document.body.classList.contains("dark-mode") ? "dark" : "light";
-      localStorage.setItem("theme", theme);
+    // Detecta preferência de tema escuro
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.body.classList.add("dark-mode");
     }
-
-    // Carrega tema e avatar
-    window.onload = () => {
-      const theme = localStorage.getItem("theme");
-      if (theme === "dark") document.body.classList.add("dark-mode");
-
-      fetch("/get-user")
-        .then(res => res.json())
-        .then(data => {
-          if (data.username) {
-            const avatar = document.getElementById("avatar");
-            avatar.textContent = data.username.charAt(0).toUpperCase();
-            avatar.title = data.username;
-          } else {
-            document.getElementById("avatar").style.display = "none";
-          }
-        });
-    };
-
-    // Login
-    document.getElementById("loginForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-
-      const res = await fetch("/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
-      });
-
-      const data = await res.json();
-      const status = document.getElementById("loginStatus");
-      status.textContent = data.message;
-      status.style.color = data.success ? "green" : "red";
-
-      if (data.success) {
-        setTimeout(() => window.location.href = "board.html", 1000);
-      }
-    });
   </script>
 </body>
 </html>
