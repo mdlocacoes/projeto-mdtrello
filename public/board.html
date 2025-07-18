@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quadros - TO DO LIST</title>
+  <meta name="description" content="Organize tarefas com quadros estilo Trello" />
+  <meta name="author" content="Bruno" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0077cc" />
+  <link rel="icon" type="image/png" href="icons/favicon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 🌐 Menu moderno -->
+  <nav class="topbar">
+    <div class="logo">📌 Mini Trello</div>
+    <div class="user-section">
+      <div id="avatar" class="avatar">?</div>
+      <span id="userName">Usuário</span>
+      <button onclick="logout()" class="logout-button">Sair</button>
+    </div>
+    <button onclick="toggleTheme()" class="theme-button">🌙</button>
+  </nav>
+
+  <main>
+    <!-- 🗂 Quadro atual -->
+    <div class="project-select">
+      <label for="projectSelect">Quadro atual:</label>
+      <select id="projectSelect"></select>
+      <button onclick="createProject()">+ Novo Quadro</button>
+    </div>
+
+    <!-- 🧭 Áreas de tarefas -->
+    <div class="board">
+      <div class="column" ondragover="allowDrop(event)" ondrop="drop(event)">
+        <h2>A Fazer</h2>
+        <div class="card-list" id="todo"></div>
+        <button onclick="addCard('todo')">+ Adicionar Cartão</button>
+      </div>
+      <div class="column" ondragover="allowDrop(event)" ondrop="drop(event)">
+        <h2>Em Progresso</h2>
+        <div class="card-list" id="in-progress"></div>
+        <button onclick="addCard('in-progress')">+ Adicionar Cartão</button>
+      </div>
+      <div class="column" ondragover="allowDrop(event)" ondrop="drop(event)">
+        <h2>Concluído</h2>
+        <div class="card-list" id="done"></div>
+        <button onclick="addCard('done')">+ Adicionar Cartão</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

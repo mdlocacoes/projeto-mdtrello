@@ -1,0 +1,16 @@
+{
+  "BRUNO GABRIEL": {
+    "todo": [
+      "TAREFA 01",
+      "TAREFA 02",
+      "TAREFA 03"
+    ],
+    "in-progress": [],
+    "done": []
+  },
+  "bruno": {
+    "todo": [],
+    "in-progress": [],
+    "done": []
+  }
+}

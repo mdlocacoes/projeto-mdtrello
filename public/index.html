@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>TO DO LIST — Organize suas Tarefas</title>
+  <meta name="description" content="Aplicativo estilo Trello para organizar seus quadros e tarefas" />
+  <meta name="author" content="Bruno" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0077cc" />
+  <link rel="icon" type="image/png" href="icons/favicon.png" />
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Botão de tema -->
+  <button onclick="toggleTheme()" class="theme-button">🌙 Tema</button>
+
+  <!-- Avatar genérico caso esteja logado -->
+  <div id="avatar" title="Usuário logado">?</div>
+
+  <header>
+    <h1>Mini Trello</h1>
+  </header>
+
+  <main>
+    <section class="welcome-section">
+      <h2>Organize suas tarefas do seu jeito!</h2>
+      <p>Simples, leve e prático — com login, cadastro e quadros interativos.</p>
+      <div class="button-group">
+        <a href="login.html">🔐 Login</a>
+        <a href="register.html">📝 Cadastro</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Tema escuro
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+      const theme = document.body.classList.contains("dark-mode") ? "dark" : "light";
+      localStorage.setItem("theme", theme);
+    }
+
+    // Carrega tema salvo
+    window.onload = () => {
+      const theme = localStorage.getItem("theme");
+      if (theme === "dark") document.body.classList.add("dark-mode");
+
+      // Busca nome do usuário via sessão
+      fetch("/get-user")
+        .then(res => res.json())
+        .then(data => {
+          if (data.username) {
+            const avatar = document.getElementById("avatar");
+            avatar.textContent = data.username.charAt(0).toUpperCase();
+            avatar.title = data.username;
+          } else {
+            document.getElementById("avatar").style.display = "none";
+          }
+        });
+    };
+  </script>
+</body>
+</html>

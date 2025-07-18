@@ -1,0 +1,291 @@
+/* 🌍 Base */
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  margin: 0;
+  background-color: #f4f4f4;
+  color: #222;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+body.dark-mode {
+  background-color: #1f1f1f;
+  color: #eee;
+}
+
+/* 🧭 Menu superior */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #026aa7;
+  color: white;
+  padding: 0.8rem 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-size: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.topbar .logo {
+  font-weight: bold;
+  font-size: 1.2rem;
+  transition: transform 0.2s ease;
+}
+.topbar .logo:hover {
+  transform: scale(1.05);
+}
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.avatar {
+  background: white;
+  color: #026aa7;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 32px;
+  font-weight: bold;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+.avatar:hover {
+  transform: rotate(6deg);
+}
+#userName {
+  font-weight: bold;
+}
+.theme-button {
+  background: #fff;
+  color: #026aa7;
+  border: none;
+  font-size: 1.2rem;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.theme-button:hover {
+  transform: rotate(20deg);
+}
+.logout-button {
+  background-color: #d33;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.logout-button:hover {
+  background-color: #b00;
+}
+body.dark-mode .topbar {
+  background-color: #222;
+}
+body.dark-mode .avatar {
+  background-color: #444;
+  color: white;
+}
+body.dark-mode .theme-button {
+  background-color: #444;
+  color: white;
+}
+
+/* 📁 Quadro Kanban */
+.board {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 2rem;
+  justify-content: space-between;
+}
+.column {
+  background-color: #e2e4e6;
+  padding: 1rem;
+  border-radius: 6px;
+  width: 30%;
+  min-width: 280px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+body.dark-mode .column {
+  background-color: #333;
+}
+.card-list {
+  min-height: 150px;
+}
+.card {
+  background-color: white;
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+  border-radius: 3px;
+  cursor: move;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+body.dark-mode .card {
+  background-color: #444;
+  color: #eee;
+}
+
+/* ➕ Botões com animação */
+button, select {
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+button:hover {
+  transform: scale(1.05);
+}
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+button:active {
+  animation: pulse 0.3s ease;
+}
+
+/* 🆕 Seletor de projeto */
+.project-select {
+  text-align: center;
+  margin: 1rem 0;
+}
+#projectSelect {
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  border-radius: 5px;
+}
+
+/* 🌐 Visualização pública */
+#columnsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 2rem;
+}
+.column.public {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  width: 30%;
+  min-width: 280px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.card.public {
+  background-color: #eee;
+  padding: 0.7rem;
+  margin: 0.5rem 0;
+  border-radius: 6px;
+}
+
+/* 📱 Responsividade */
+@media (max-width: 768px) {
+  .board,
+  #columnsContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+  .column,
+  .column.public {
+    width: 90%;
+  }
+}
+
+.card-modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+.modal-content {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: 300px;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.modal-content label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+}
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+.modal-actions button {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+body.dark-mode .modal-content {
+  background: #2c2c2c;
+  color: white;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.card-tag {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  float: right;
+  margin-top: -1.2rem;
+}
+
+.card-modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+.modal-content {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: 300px;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.modal-content label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+}
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+.modal-actions button {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+body.dark-mode .modal-content {
+  background: #2c2c2c;
+  color: white;
+}

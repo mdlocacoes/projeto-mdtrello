@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quadro Público</title>
+  <link rel="stylesheet" href="styles.css" />
+  <title>TO DO LIST - Meus Quadros</title>
+    <meta name="description" content="Aplicativo estilo Trello para organizar seus quadros e tarefas">
+    <meta name="author" content="Bruno">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" href="icons/favicon.png">
+  <style>
+    body {
+      background: #f9f9f9;
+      font-family: 'Inter', sans-serif;
+      padding: 2rem;
+      color: #333;
+    }
+    h2 {
+      margin-bottom: 1rem;
+    }
+    .column {
+      float: left;
+      width: 30%;
+      margin-right: 2%;
+      background: #fff;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .card {
+      background: #eee;
+      margin: 0.5rem 0;
+      padding: 0.7rem;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <h2 id="boardTitle">Carregando...</h2>
+  <div id="columnsContainer"></div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const projectId = urlParams.get("id");
+
+    fetch(`/api/public-board?id=${projectId}`)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("boardTitle").textContent = data.name;
+
+        const container = document.getElementById("columnsContainer");
+        for (const coluna in data.data) {
+          const colunaDiv = document.createElement("div");
+          colunaDiv.className = "column";
+          colunaDiv.innerHTML = `<h3>${coluna}</h3>`;
+          data.data[coluna].forEach(card => {
+            const cardDiv = document.createElement("div");
+            cardDiv.className = "card";
+            cardDiv.textContent = card;
+            colunaDiv.appendChild(cardDiv);
+          });
+          container.appendChild(colunaDiv);
+        }
+      })
+      .catch(err => {
+        document.getElementById("boardTitle").textContent = "Quadro não encontrado.";
+      });
+  </script>
+</body>
+</html>
