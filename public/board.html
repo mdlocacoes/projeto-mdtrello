@@ -4,29 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MD Tasks - Quadro</title>
-
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-  <!-- Estilo principal -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="styles.css" />
   <script src="script.js" defer></script>
 </head>
 <body>
   <div class="topbar">
-    <div class="logo"><i class="fa-solid fa-layer-group"></i>MD Tasks</div>
-    <div class="user-section">
-      <span id="userName">MDLOCACOES</span>
-      <select id="projectSelect"></select>
-      <button onclick="createNewProject()" class="theme-button" title="Novo Quadro">
-        <i class="fa-solid fa-plus"></i>
-      </button>
+    <div class="logo"><i class="fa-solid fa-layer-group"></i> MD Tasks</div>
+    <button id="mobileMenuToggle" class="theme-button" title="Menu"><i class="fa-solid fa-bars"></i></button>
+  </div>
+
+  <!-- Menu lateral mobile -->
+  <aside id="mobileMenu" class="mobile-menu">
+    <button onclick="toggleTheme()" class="btn secondary">Alternar tema</button>
+    <div class="user-box">
+      <span id="userName">Usuário</span>
       <button onclick="logout()" class="logout-button">Sair</button>
     </div>
-  </div>
+    <select id="projectSelect"></select>
+    <button onclick="createNewProject()" class="btn primary">+ Novo Quadro</button>
+    <button onclick="renameProject()" class="btn secondary">Renomear</button>
+    <button onclick="deleteProject()" class="btn secondary">Excluir</button>
+  </aside>
 
   <div class="board">
     <div class="column" data-column="todo">
@@ -49,15 +49,9 @@
   </div>
 
   <script>
-    // Detecta preferência de tema escuro
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      document.body.classList.add("dark-mode");
-    }
-
-    // Carrega os quadros
-    loadProjects();
+    document.getElementById("mobileMenuToggle").onclick = () => {
+      document.getElementById("mobileMenu").classList.toggle("open");
+    };
   </script>
-
-  <script src="script.js" defer></script>
 </body>
 </html>

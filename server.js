@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 });
 
 // 🔁 Rotas externas
-const authRoutes = require("./routes/auth"); // ✅ certifique-se de que está usando a pasta correta
+const authRoutes = require("./routers/auth"); // ✅ certifique-se de que está usando a pasta correta
 app.use("/", authRoutes);
 
 // 🚀 Inicia o servidor

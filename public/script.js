@@ -1,5 +1,5 @@
 let allProjects = {};
-let currentProject = "Padrão";
+let currentProject = "MD Tasks";
 
 // 🔐 Autenticação e inicialização
 fetch("/get-user")
@@ -8,22 +8,35 @@ fetch("/get-user")
     if (!data.username) {
       window.location.href = "login.html";
     } else {
-      document.getElementById("avatar").textContent = data.username[0].toUpperCase();
+      const avatar = document.getElementById("avatar");
+      if (avatar) avatar.textContent = data.username[0].toUpperCase();
+
       document.getElementById("userName").textContent = data.username;
       loadProjects();
     }
   });
 
 // 🌙 Tema escuro persistente
-window.onload = () => {
-  if (localStorage.getItem("theme") === "dark") {
+window.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "dark") {
     document.body.classList.add("dark-mode");
+    const icon = document.querySelector(".theme-button i");
+    if (icon) icon.className = "fa-solid fa-sun";
   }
-};
+
+  document.querySelectorAll(".column").forEach(col => {
+    col.ondrop = drop;
+    col.ondragover = allowDrop;
+  });
+});
 
 function toggleTheme() {
-  document.body.classList.toggle("dark-mode");
-  localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+  const isDark = document.body.classList.toggle("dark-mode");
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+
+  const icon = document.querySelector(".theme-button i");
+  if (icon) icon.className = isDark ? "fa-solid fa-sun" : "fa-solid fa-moon";
 }
 
 // 🚪 Logout
@@ -38,7 +51,12 @@ function loadProjects() {
     .then(data => {
       allProjects = data || {};
       const nomes = Object.keys(allProjects);
-      currentProject = nomes[0] || "Padrão";
+      currentProject = nomes[0] || "MD Tasks";
+
+      if (!allProjects[currentProject]) {
+        allProjects[currentProject] = { todo: [], "in-progress": [], done: [] };
+      }
+
       renderProjectOptions();
       renderCards();
     });
@@ -58,7 +76,7 @@ function renderProjectOptions() {
 }
 
 // ➕ Cria novo quadro
-function createProject() {
+function createNewProject() {
   const nome = prompt("Nome do novo quadro:");
   if (!nome || allProjects[nome]) return;
   allProjects[nome] = { todo: [], "in-progress": [], done: [] };
@@ -90,7 +108,7 @@ function deleteProject() {
   }).then(() => {
     delete allProjects[currentProject];
     const restantes = Object.keys(allProjects);
-    currentProject = restantes[0] || "Padrão";
+    currentProject = restantes[0] || "MD Tasks";
     renderProjectOptions();
     renderCards();
     saveCards();
@@ -120,11 +138,50 @@ function renderCards() {
       card.ondragstart = drag;
 
       card.innerHTML = `
-        <strong class="card-title">${cardData.text}</strong>
-        ${cardData.label ? `<div class="card-tag" style="background:${cardData.label}"></div>` : ""}
+        <div class="card-header">
+          <strong class="card-title">${cardData.text}</strong>
+          <div class="card-controls">
+            <button class="expand-btn"><i class="fa-solid fa-chevron-down"></i></button>
+          </div>
+        </div>
+        ${cardData.label ? `<span class="tag" style="background:${cardData.label}"></span>` : ""}
       `;
 
-      card.ondblclick = () => openModal(cardData, id);
+      card.querySelector(".expand-btn").onclick = () => {
+        card.classList.toggle("expanded");
+
+        if (card.classList.contains("expanded")) {
+          const details = document.createElement("div");
+          details.className = "card-details";
+          details.innerHTML = `
+            ${cardData.comment ? `<p><strong>Comentário:</strong> ${cardData.comment}</p>` : ""}
+            ${cardData.date ? `<p><strong>Data:</strong> ${cardData.date}</p>` : ""}
+            ${cardData.label ? `<p><strong>Etiqueta:</strong> <span class="tag" style="background:${cardData.label}"></span></p>` : ""}
+            ${cardData.file ? `<p><strong>Anexo:</strong> <a href="${cardData.file}" target="_blank">Ver</a></p>` : ""}
+            <div class="card-actions">
+              <button class="edit-btn"><i class="fa-solid fa-pen-to-square"></i></button>
+              <button class="delete-btn"><i class="fa-solid fa-trash"></i></button>
+              <button class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+          `;
+          card.appendChild(details);
+
+          details.querySelector(".edit-btn").onclick = () => openModal(cardData, id);
+          details.querySelector(".delete-btn").onclick = () => {
+            allProjects[currentProject][id] = allProjects[currentProject][id].filter(c => c !== cardData);
+            renderCards();
+            saveCards();
+          };
+          details.querySelector(".close-btn").onclick = () => {
+            card.classList.remove("expanded");
+            details.remove();
+          };
+        } else {
+          const details = card.querySelector(".card-details");
+          if (details) details.remove();
+        }
+      };
+
       container.appendChild(card);
     });
   });
@@ -155,7 +212,8 @@ function drag(ev) {
 }
 function drop(ev) {
   ev.preventDefault();
-  const column = ev.target.closest(".column").id;
+  const column = ev.target.closest(".column")?.getAttribute("data-column");
+  if (!column) return;
   const texto = ev.dataTransfer.getData("text");
 
   for (const col in allProjects[currentProject]) {
@@ -184,6 +242,8 @@ function openModal(data, column) {
           <option value="#28a745">Verde</option>
           <option value="#17a2b8">Azul</option>
           <option value="#dc3545">Vermelha</option>
+        </select>
+               <option value="#dc3545">Vermelha</option>
         </select>
       </label>
       <label>Anexo (URL):<input type="text" id="file" value="${data.file}"></label>

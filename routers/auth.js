@@ -3,6 +3,7 @@ const path = require("path");
 const router = express.Router();
 const db = require("../db");
 
+// 🛡️ Middleware que exige login
 function exigirLogin(req, res, next) {
   if (!req.session.user) {
     return res.status(403).json({ error: "Usuário não autenticado" });
@@ -16,20 +17,20 @@ router.post("/register", (req, res) => {
   try {
     db.prepare("INSERT INTO users (username, password) VALUES (?, ?)").run(username, password);
     const user = db.prepare("SELECT id FROM users WHERE username = ?").get(username);
+
     db.prepare("INSERT INTO projects (user_id, name, data) VALUES (?, ?, ?)").run(
       user.id,
       "Padrão",
       JSON.stringify({ todo: [], "in-progress": [], done: [] })
     );
+
     req.session.user = username;
-    console.log("Novo usuário cadastrado:", username);
-    res.redirect("/"); // redireciona após cadastro
+    res.json({ success: true, message: "Cadastro realizado com sucesso!" });
   } catch (err) {
-    res.redirect("/register.html?erro=1"); // usuário já existe
+    res.json({ success: false, message: "Usuário já existe." });
   }
 });
 
-// 🔐 Login
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
   const user = db.prepare("SELECT * FROM users WHERE username = ? AND password = ?").get(username, password);
@@ -37,13 +38,13 @@ router.post("/login", (req, res) => {
   if (user) {
     req.session.user = username;
     console.log("Login bem-sucedido para:", username);
-    res.redirect("/board.html"); // ✅ redireciona para a página de quadros
+    res.redirect("/board.html");
   } else {
-    res.redirect("/login.html?erro=1"); // ❌ login inválido, volta com erro
+    res.redirect("/login.html?erro=1");
   }
 });
 
-// 🧑 Obter usuário atual
+// 🧑 Rota para obter usuário atual
 router.get("/get-user", (req, res) => {
   res.json({ username: req.session.user || null });
 });
@@ -55,30 +56,43 @@ router.get("/logout", (req, res) => {
   });
 });
 
-// 💾 Salvar quadros
+// 📤 Salvar quadros
 router.post("/save-projects", exigirLogin, (req, res) => {
   const { projects } = req.body;
   const username = req.session.user;
-  const user = db.prepare("SELECT id FROM users WHERE username = ?").get(username);
-  if (!user || !projects || typeof projects !== "object") {
-    return res.status(400).json({ success: false, message: "Dados inválidos." });
+
+  if (!projects || typeof projects !== "object") {
+    return res.status(400).json({ success: false, message: "Formato de dados inválido." });
   }
 
-  console.log("🔄 Salvando quadros para:", username);
+  const user = db.prepare("SELECT id FROM users WHERE username = ?").get(username);
+  if (!user) return res.status(401).json({ success: false, message: "Usuário não encontrado." });
+
+  const entries = Object.entries(projects);
+  if (entries.length === 0) {
+    return res.status(400).json({ success: false, message: "Nenhum quadro para salvar." });
+  }
+
   try {
-    db.prepare("DELETE FROM projects WHERE user_id = ?").run(user.id);
-    for (const [name, data] of Object.entries(projects)) {
+    // Apaga somente quadros com os mesmos nomes
+    const existingNames = entries.map(([name]) => name);
+    db.prepare(
+      `DELETE FROM projects WHERE user_id = ? AND name IN (${existingNames.map(() => '?').join(',')})`
+    ).run(user.id, ...existingNames);
+
+    for (const [name, data] of entries) {
       const serialized = JSON.stringify(data);
       db.prepare("INSERT INTO projects (user_id, name, data) VALUES (?, ?, ?)").run(user.id, name, serialized);
     }
-    res.json({ success: true });
+
+    res.json({ success: true, message: "Quadros salvos com sucesso." });
   } catch (err) {
     console.error("Erro ao salvar quadros:", err);
-    res.status(500).json({ success: false });
+    res.status(500).json({ success: false, message: "Erro interno ao salvar quadros." });
   }
 });
 
-// 📥 Carregar quadros
+// 📥 Buscar quadros
 router.get("/get-projects", exigirLogin, (req, res) => {
   const username = req.session.user;
   const user = db.prepare("SELECT id FROM users WHERE username = ?").get(username);
@@ -93,14 +107,22 @@ router.get("/get-projects", exigirLogin, (req, res) => {
   res.json(projects);
 });
 
-// 🗑️ Excluir quadro
-router.post("/delete-project", exigirLogin, (req, res) => {
-  const { name } = req.body;
-  const user = db.prepare("SELECT id FROM users WHERE username = ?").get(req.session.user);
-  if (!user) return res.status(401).json({ success: false });
+// 🌐 Página pública
+router.get("/public-board.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/public-board.html"));
+});
 
-  db.prepare("DELETE FROM projects WHERE user_id = ? AND name = ?").run(user.id, name);
-  res.json({ success: true });
+// 📊 API pública de um quadro
+router.get("/api/public-board", (req, res) => {
+  const { id } = req.query;
+  const project = db.prepare("SELECT name, data FROM projects WHERE id = ?").get(id);
+
+  if (!project) return res.status(404).json({ error: "Quadro não encontrado" });
+
+  res.json({
+    name: project.name,
+    data: JSON.parse(project.data)
+  });
 });
 
 module.exports = router;
