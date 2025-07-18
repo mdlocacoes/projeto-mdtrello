@@ -1,56 +1,63 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Quadros - TO DO LIST</title>
-  <meta name="description" content="Organize tarefas com quadros estilo Trello" />
-  <meta name="author" content="Bruno" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#0077cc" />
-  <link rel="icon" type="image/png" href="icons/favicon.png" />
+  <title>MD Tasks - Quadro</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Estilo principal -->
   <link rel="stylesheet" href="styles.css" />
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <!-- 🌐 Menu moderno -->
-  <nav class="topbar">
-    <div class="logo">📌 Mini Trello</div>
+  <div class="topbar">
+    <div class="logo"><i class="fa-solid fa-layer-group"></i>MD Tasks</div>
     <div class="user-section">
-      <div id="avatar" class="avatar">?</div>
-      <span id="userName">Usuário</span>
+      <span id="userName">MDLOCACOES</span>
+      <select id="projectSelect"></select>
+      <button onclick="createNewProject()" class="theme-button" title="Novo Quadro">
+        <i class="fa-solid fa-plus"></i>
+      </button>
       <button onclick="logout()" class="logout-button">Sair</button>
     </div>
-    <button onclick="toggleTheme()" class="theme-button">🌙</button>
-  </nav>
+  </div>
 
-  <main>
-    <!-- 🗂 Quadro atual -->
-    <div class="project-select">
-      <label for="projectSelect">Quadro atual:</label>
-      <select id="projectSelect"></select>
-      <button onclick="createProject()">+ Novo Quadro</button>
+  <div class="board">
+    <div class="column" data-column="todo">
+      <h2>A Fazer</h2>
+      <div class="card-list" id="todo"></div>
+      <button onclick="addCard('todo')">+ Adicionar Cartão</button>
     </div>
 
-    <!-- 🧭 Áreas de tarefas -->
-    <div class="board">
-      <div class="column" ondragover="allowDrop(event)" ondrop="drop(event)">
-        <h2>A Fazer</h2>
-        <div class="card-list" id="todo"></div>
-        <button onclick="addCard('todo')">+ Adicionar Cartão</button>
-      </div>
-      <div class="column" ondragover="allowDrop(event)" ondrop="drop(event)">
-        <h2>Em Progresso</h2>
-        <div class="card-list" id="in-progress"></div>
-        <button onclick="addCard('in-progress')">+ Adicionar Cartão</button>
-      </div>
-      <div class="column" ondragover="allowDrop(event)" ondrop="drop(event)">
-        <h2>Concluído</h2>
-        <div class="card-list" id="done"></div>
-        <button onclick="addCard('done')">+ Adicionar Cartão</button>
-      </div>
+    <div class="column" data-column="in-progress">
+      <h2>Em Progresso</h2>
+      <div class="card-list" id="in-progress"></div>
+      <button onclick="addCard('in-progress')">+ Adicionar Cartão</button>
     </div>
-  </main>
 
-  <script src="script.js"></script>
+    <div class="column" data-column="done">
+      <h2>Concluído</h2>
+      <div class="card-list" id="done"></div>
+      <button onclick="addCard('done')">+ Adicionar Cartão</button>
+    </div>
+  </div>
+
+  <script>
+    // Detecta preferência de tema escuro
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.body.classList.add("dark-mode");
+    }
+
+    // Carrega os quadros
+    loadProjects();
+  </script>
+
+  <script src="script.js" defer></script>
 </body>
 </html>

@@ -7,6 +7,7 @@ const PORT = 3000;
 
 // 🔧 Middlewares
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // ✅ necessário para formulários HTML
 
 // ✅ Corrigido: serve arquivos estáticos corretamente
 app.use(express.static(path.join(__dirname, "public")));
@@ -26,7 +27,7 @@ app.get("/", (req, res) => {
 });
 
 // 🔁 Rotas externas
-const authRoutes = require("./routes/auth");
+const authRoutes = require("./routes/auth"); // ✅ certifique-se de que está usando a pasta correta
 app.use("/", authRoutes);
 
 // 🚀 Inicia o servidor

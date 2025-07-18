@@ -33,12 +33,13 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
   const user = db.prepare("SELECT * FROM users WHERE username = ? AND password = ?").get(username, password);
+
   if (user) {
     req.session.user = username;
     console.log("Login bem-sucedido para:", username);
-    res.redirect("/");
+    res.redirect("/board.html"); // ✅ redireciona para a página de quadros
   } else {
-    res.redirect("/login.html?erro=1");
+    res.redirect("/login.html?erro=1"); // ❌ login inválido, volta com erro
   }
 });
 
