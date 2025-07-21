@@ -534,3 +534,31 @@ body.dark-mode .form-box input {
     width: 100%;
   }
 }
+.card.expanded .card-details {
+  display: block;
+  margin-top: 10px;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+.card-details {
+  display: none;
+}
+
+.card-form input,
+.card-form textarea,
+.card-form select {
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}

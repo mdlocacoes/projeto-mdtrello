@@ -3,67 +3,87 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MD Tasks - Visual V2</title>
-  <link rel="stylesheet" href="styles-v2.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <title>MD Tasks - V2 Tailwind</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          minHeight: {
+            '300': '300px'
+          }
+        }
+      }
+    }
+  </script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
-<body>
+<body class="bg-gray-100 text-gray-800 transition-colors duration-300">
 
-  <!-- 🔵 Topbar -->
-  <div class="topbar">
-    <div class="logo"><i class="fa-solid fa-layer-group"></i> MD Tasks</div>
-    <div class="user-section">
-      <button onclick="toggleTheme()" class="theme-button" title="Tema"><i class="fa-solid fa-moon"></i></button>
-      <button id="menuToggle" class="theme-button" title="Menu"><i class="fa-solid fa-bars"></i></button>
+  <!-- 🔷 Topbar -->
+  <header class="flex justify-between items-center bg-gray-800 text-white px-4 py-3">
+    <div class="flex items-center gap-2">
+      <i class="fa-solid fa-layer-group text-lg"></i>
+      <h1 class="font-semibold text-lg">MD Tasks</h1>
     </div>
-  </div>
+    <div class="flex gap-3 items-center">
+      <button onclick="toggleTheme()" class="hover:text-yellow-300"><i class="fa-solid fa-moon"></i></button>
+      <button id="menuToggle" class="hover:text-green-300"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </header>
 
-  <!-- 🍔 Menu lateral -->
-  <aside id="mobileMenu" class="mobile-menu">
-    <button onclick="closeMenu()" class="btn secondary"><i class="fa-solid fa-xmark"></i> Fechar</button>
-    <div class="user-box">
-      <span id="userName">Olá, Usuário</span>
-      <button onclick="logout()" class="logout-button">Sair</button>
+  <!-- 📱 Menu lateral -->
+  <aside id="mobileMenu" class="fixed top-0 right-0 w-64 h-full bg-white dark:bg-gray-900 shadow-lg z-50 transform translate-x-full transition-transform duration-300">
+    <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+      <span id="userName" class="font-semibold dark:text-white">Olá, Usuário</span>
+      <button onclick="closeMenu()" class="hover:text-black dark:hover:text-white"><i class="fa-solid fa-xmark"></i></button>
     </div>
-    <select id="projectSelect"></select>
-    <button onclick="createNewProject()" class="btn primary">+ Novo Quadro</button>
-    <button onclick="renameProject()" class="btn secondary">Renomear</button>
-    <button onclick="deleteProject()" class="btn secondary">Excluir</button>
+    <div class="p-4 space-y-3">
+      <select id="projectSelect" class="w-full border rounded p-2 text-sm dark:bg-gray-800 dark:text-white dark:border-gray-600"></select>
+      <button onclick="createNewProject()" class="w-full bg-blue-500 text-white py-2 rounded">+ Novo Quadro</button>
+      <button onclick="renameProject()" class="w-full bg-gray-200 dark:bg-gray-700 dark:text-white py-2 rounded">Renomear</button>
+      <button onclick="deleteProject()" class="w-full bg-gray-200 dark:bg-gray-700 dark:text-white py-2 rounded">Excluir</button>
+      <button onclick="logout()" class="w-full bg-red-500 text-white py-2 rounded mt-2">Sair</button>
+    </div>
   </aside>
 
   <!-- 📋 Colunas Kanban -->
-  <main class="board">
-    <div class="column" data-column="todo">
-      <h2>A Fazer</h2>
-      <div class="card-list" id="todo"></div>
-      <button onclick="addCard('todo')" class="btn secondary">+ Adicionar Cartão</button>
-    </div>
-
-    <div class="column" data-column="in-progress">
-      <h2>Em Progresso</h2>
-      <div class="card-list" id="in-progress"></div>
-      <button onclick="addCard('in-progress')" class="btn secondary">+ Adicionar Cartão</button>
-    </div>
-
-    <div class="column" data-column="done">
-      <h2>Concluído</h2>
-      <div class="card-list" id="done"></div>
-      <button onclick="addCard('done')" class="btn secondary">+ Adicionar Cartão</button>
-    </div>
+  <main class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+    <section class="bg-white dark:bg-gray-800 rounded shadow p-3 flex flex-col min-h-[300px]" data-column="todo">
+      <h2 class="text-lg font-semibold mb-2 dark:text-white">A Fazer</h2>
+      <div class="card-list flex-grow" id="todo"></div>
+      <button onclick="addCard('todo')" class="bg-gray-200 dark:bg-gray-700 dark:text-white py-2 rounded mt-2">+ Adicionar Cartão</button>
+    </section>
+    <section class="bg-white dark:bg-gray-800 rounded shadow p-3 flex flex-col min-h-[300px]" data-column="in-progress">
+      <h2 class="text-lg font-semibold mb-2 dark:text-white">Em Progresso</h2>
+      <div class="card-list flex-grow" id="in-progress"></div>
+      <button onclick="addCard('in-progress')" class="bg-gray-200 dark:bg-gray-700 dark:text-white py-2 rounded mt-2">+ Adicionar Cartão</button>
+    </section>
+    <section class="bg-white dark:bg-gray-800 rounded shadow p-3 flex flex-col min-h-[300px]" data-column="done">
+      <h2 class="text-lg font-semibold mb-2 dark:text-white">Concluído</h2>
+      <div class="card-list flex-grow" id="done"></div>
+      <button onclick="addCard('done')" class="bg-gray-200 dark:bg-gray-700 dark:text-white py-2 rounded mt-2">+ Adicionar Cartão</button>
+    </section>
   </main>
 
-  <!-- ⚙️ Interações básicas -->
+  <!-- ⚙️ Interações menu -->
   <script>
+    const menu = document.getElementById("mobileMenu");
     document.getElementById("menuToggle").onclick = () => {
-      document.getElementById("mobileMenu").classList.toggle("open");
+      menu.classList.remove("translate-x-full");
+      menu.classList.add("translate-x-0");
     };
     function closeMenu() {
-      document.getElementById("mobileMenu").classList.remove("open");
+      menu.classList.remove("translate-x-0");
+      menu.classList.add("translate-x-full");
+    }
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
     }
   </script>
 
-  <!-- 🔧 Script principal (reutilizado) -->
-  <script src="../script.js"></script>
+  <!-- 🔧 Script principal -->
+  <script src="script-v2.js"></script>
 </body>
 </html>
