@@ -189,12 +189,19 @@ function renderCards() {
 
 // ➕ Adiciona novo cartão
 function addCard(column) {
-  const texto = prompt("Texto do novo cartão:");
-  if (!texto) return;
-  const novo = { text: texto, comment: "", date: "", label: "", file: "" };
-  allProjects[currentProject][column].push(novo);
-  renderCards();
-  saveCards();
+  const content = prompt("Conteúdo do cartão:");
+  if (!content || !currentProjectId) return;
+
+  fetch("/cards", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ content, column, projectId: currentProjectId })
+  })
+  .then(res => res.json())
+  .then(data => {
+    loadCards(); // recarrega os cartões visualmente
+  })
+  .catch(err => alert("Erro ao adicionar cartão: " + err));
 }
 
 // 🔁 Troca de quadro via seletor

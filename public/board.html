@@ -4,54 +4,94 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MD Tasks - Quadro</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="styles.css" />
-  <script src="script.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
+
+  <!-- 🔵 Topbar com tema e menu -->
   <div class="topbar">
     <div class="logo"><i class="fa-solid fa-layer-group"></i> MD Tasks</div>
-    <button id="mobileMenuToggle" class="theme-button" title="Menu"><i class="fa-solid fa-bars"></i></button>
+    <div class="user-section">
+      <button onclick="toggleTheme()" class="theme-button" title="Tema"><i class="fa-solid fa-moon"></i></button>
+      <button id="menuToggle" class="theme-button" title="Menu"><i class="fa-solid fa-bars"></i></button>
+    </div>
   </div>
 
-  <!-- Menu lateral mobile -->
+  <!-- 🍔 Menu lateral mobile -->
   <aside id="mobileMenu" class="mobile-menu">
-    <button onclick="toggleTheme()" class="btn secondary">Alternar tema</button>
+    <button onclick="closeMenu()" class="btn secondary"><i class="fa-solid fa-xmark"></i> Fechar Menu</button>
     <div class="user-box">
-      <span id="userName">Usuário</span>
+      <span id="userName">Olá, Usuário</span>
       <button onclick="logout()" class="logout-button">Sair</button>
     </div>
-    <select id="projectSelect"></select>
+    <select id="projectSelect">
+      <option value="default">Projeto atual</option>
+    </select>
     <button onclick="createNewProject()" class="btn primary">+ Novo Quadro</button>
     <button onclick="renameProject()" class="btn secondary">Renomear</button>
     <button onclick="deleteProject()" class="btn secondary">Excluir</button>
   </aside>
 
-  <div class="board">
-    <div class="column" data-column="todo">
+  <!-- 📋 Quadro Kanban -->
+  <main class="board">
+    <div class="column">
       <h2>A Fazer</h2>
       <div class="card-list" id="todo"></div>
-      <button onclick="addCard('todo')">+ Adicionar Cartão</button>
+      <button onclick="addCard('todo')" class="btn secondary">+ Adicionar Cartão</button>
     </div>
 
-    <div class="column" data-column="in-progress">
+    <div class="column">
       <h2>Em Progresso</h2>
       <div class="card-list" id="in-progress"></div>
-      <button onclick="addCard('in-progress')">+ Adicionar Cartão</button>
+      <button onclick="addCard('in-progress')" class="btn secondary">+ Adicionar Cartão</button>
     </div>
 
-    <div class="column" data-column="done">
+    <div class="column">
       <h2>Concluído</h2>
       <div class="card-list" id="done"></div>
-      <button onclick="addCard('done')">+ Adicionar Cartão</button>
+      <button onclick="addCard('done')" class="btn secondary">+ Adicionar Cartão</button>
     </div>
-  </div>
+  </main>
 
+  <!-- ⚙️ Scripts para interações -->
   <script>
-    document.getElementById("mobileMenuToggle").onclick = () => {
+    // Alterna tema escuro/claro
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    // Alterna abertura/fechamento do menu lateral
+    document.getElementById("menuToggle").onclick = () => {
       document.getElementById("mobileMenu").classList.toggle("open");
     };
+
+    function closeMenu() {
+      document.getElementById("mobileMenu").classList.remove("open");
+    }
+
+    // Funções de exemplo (você pode adaptar)
+    function logout() {
+      alert("Saindo...");
+    }
+
+    function createNewProject() {
+      alert("Novo quadro criado!");
+    }
+
+    function renameProject() {
+      alert("Projeto renomeado!");
+    }
+
+    function deleteProject() {
+      alert("Projeto excluído!");
+    }
+
+    function addCard(column) {
+      alert(`Cartão adicionado em ${column}`);
+    }
   </script>
+
 </body>
 </html>
