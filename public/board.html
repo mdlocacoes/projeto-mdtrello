@@ -36,62 +36,36 @@
 
   <!-- 📋 Quadro Kanban -->
   <main class="board">
-    <div class="column">
+    <div class="column" data-column="todo">
       <h2>A Fazer</h2>
       <div class="card-list" id="todo"></div>
       <button onclick="addCard('todo')" class="btn secondary">+ Adicionar Cartão</button>
     </div>
 
-    <div class="column">
+    <div class="column" data-column="in-progress">
       <h2>Em Progresso</h2>
       <div class="card-list" id="in-progress"></div>
       <button onclick="addCard('in-progress')" class="btn secondary">+ Adicionar Cartão</button>
     </div>
 
-    <div class="column">
+    <div class="column" data-column="done">
       <h2>Concluído</h2>
       <div class="card-list" id="done"></div>
       <button onclick="addCard('done')" class="btn secondary">+ Adicionar Cartão</button>
     </div>
   </main>
 
-  <!-- ⚙️ Scripts para interações -->
+  <!-- ⚙️ Menu toggle e tema -->
   <script>
-    // Alterna tema escuro/claro
-    function toggleTheme() {
-      document.body.classList.toggle("dark-mode");
-    }
-
-    // Alterna abertura/fechamento do menu lateral
     document.getElementById("menuToggle").onclick = () => {
       document.getElementById("mobileMenu").classList.toggle("open");
     };
-
     function closeMenu() {
       document.getElementById("mobileMenu").classList.remove("open");
     }
-
-    // Funções de exemplo (você pode adaptar)
-    function logout() {
-      alert("Saindo...");
-    }
-
-    function createNewProject() {
-      alert("Novo quadro criado!");
-    }
-
-    function renameProject() {
-      alert("Projeto renomeado!");
-    }
-
-    function deleteProject() {
-      alert("Projeto excluído!");
-    }
-
-    function addCard(column) {
-      alert(`Cartão adicionado em ${column}`);
-    }
   </script>
 
+  <!-- 📦 Integração com o script real -->
+  <script src="script.js"></script>
 </body>
 </html>

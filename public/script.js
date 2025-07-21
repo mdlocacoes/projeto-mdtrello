@@ -1,3 +1,4 @@
+
 let allProjects = {};
 let currentProject = "MD Tasks";
 
@@ -187,21 +188,22 @@ function renderCards() {
   });
 }
 
-// ➕ Adiciona novo cartão
+// ➕ Adiciona novo cartão — agora funcionando!
 function addCard(column) {
   const content = prompt("Conteúdo do cartão:");
-  if (!content || !currentProjectId) return;
+  if (!content || !currentProject) return;
 
-  fetch("/cards", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ content, column, projectId: currentProjectId })
-  })
-  .then(res => res.json())
-  .then(data => {
-    loadCards(); // recarrega os cartões visualmente
-  })
-  .catch(err => alert("Erro ao adicionar cartão: " + err));
+  const newCard = {
+    text: content,
+    comment: "",
+    date: "",
+    label: "",
+    file: ""
+  };
+
+  allProjects[currentProject][column].push(newCard);
+  renderCards();
+  saveCards();
 }
 
 // 🔁 Troca de quadro via seletor
@@ -250,9 +252,8 @@ function openModal(data, column) {
           <option value="#17a2b8">Azul</option>
           <option value="#dc3545">Vermelha</option>
         </select>
-               <option value="#dc3545">Vermelha</option>
-        </select>
       </label>
+      <label>Anexo (URL):<input type="text" id      
       <label>Anexo (URL):<input type="text" id="file" value="${data.file}"></label>
       <div class="modal-actions">
         <button id="save">Salvar</button>
