@@ -142,10 +142,18 @@ function renderCards() {
         ${cardData.label ? `<span class="tag" style="background:${cardData.label}"></span>` : ""}
       `;
 
-      card.querySelector(".expand-btn").onclick = () => {
-        card.classList.toggle("expanded");
+      const expandButton = card.querySelector(".expand-btn");
+      if (expandButton) {
+        expandButton.onclick = () => {
+          console.log("🧠 Expandindo cartão:", cardData.text);
+          card.classList.toggle("expanded");
 
-        if (card.classList.contains("expanded")) {
+          const existedDetails = card.querySelector(".card-details");
+          if (existedDetails) {
+            existedDetails.remove();
+            return;
+          }
+
           const details = document.createElement("div");
           details.className = "card-details";
           details.innerHTML = `
@@ -163,6 +171,7 @@ function renderCards() {
                 </select>
               </label>
               <label>Anexo (URL): <input type="text" id="file-${uniqueId}" value="${cardData.file || ""}" /></label>
+
               <div class="card-actions">
                 <button onclick="saveInline('${uniqueId}', '${columnId}', ${index})" class="btn primary">Salvar</button>
                 <button onclick="deleteInline('${columnId}', ${index})" class="btn danger">Excluir</button>
@@ -170,29 +179,26 @@ function renderCards() {
               </div>
             </div>
           `;
-          document.getElementById(`label-${uniqueId}`).value = cardData.label;
-          card.appendChild(details);
-        } else {
-          const details = card.querySelector(".card-details");
-          if (details) details.remove();
-        }
-      };
+         card.appendChild(details);
+          const labelField = document.getElementById(`label-${uniqueId}`);
+          if (labelField) labelField.value = cardData.label;
+        };
+      }
 
       container.appendChild(card);
     });
   });
 }
 
-function saveInline(id, column) {
-  const text = document.getElementById(`text-${id}`).value;
-  const comment = document.getElementById(`comment-${id}`).value;
-  const date = document.getElementById(`date-${id}`).value;
-  const label = document.getElementById(`label-${id}`).value;
-  const file = document.getElementById(`file-${id}`).value;
+function saveInline(uid, columnId, index) {
+  const text = document.getElementById(`text-${uid}`).value;
+  const comment = document.getElementById(`comment-${uid}`).value;
+  const date = document.getElementById(`date-${uid}`).value;
+  const label = document.getElementById(`label-${uid}`).value;
+  const file = document.getElementById(`file-${uid}`).value;
 
-  const cards = allProjects[currentProject][column];
-  const card = cards.find(c => c.text === text);
-  if (!card) return;
+  const cards = allProjects[currentProject][columnId];
+  const card = cards[index]; // usa índice direto — mais confiável
 
   card.text = text;
   card.comment = comment;
@@ -204,8 +210,14 @@ function saveInline(id, column) {
   saveCards();
 }
 
-function deleteInline(texto, column) {
-  allProjects[currentProject][column] = allProjects[currentProject][column].filter(c => c.text !== texto);
+function deleteInline(columnId, index) {
+  allProjects[currentProject][columnId].splice(index, 1); // remove usando índice
+  renderCards();
+  saveCards();
+}
+
+function deleteInline(columnId, index) {
+  allProjects[currentProject][columnId].splice(index, 1); // remove pelo índice
   renderCards();
   saveCards();
 }
