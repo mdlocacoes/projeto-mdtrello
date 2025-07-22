@@ -34,37 +34,17 @@
     <button onclick="deleteProject()" class="btn secondary">Excluir</button>
   </aside>
 
-  <!-- 🧱 Quadro Kanban com colunas horizontais unificadas -->
-  <div class="board-wrapper">
-    <div id="board" class="board">
-
-      <!-- Colunas fixas -->
-      <div class="column" data-column="todo">
-        <h2>A Fazer</h2>
-        <div class="card-list" id="todo"></div>
-        <button onclick="addCard('todo')" class="btn secondary">+ Adicionar Cartão</button>
-      </div>
-
-      <div class="column" data-column="in-progress">
-        <h2>Em Progresso</h2>
-        <div class="card-list" id="in-progress"></div>
-        <button onclick="addCard('in-progress')" class="btn secondary">+ Adicionar Cartão</button>
-      </div>
-
-      <div class="column" data-column="done">
-        <h2>Concluído</h2>
-        <div class="card-list" id="done"></div>
-        <button onclick="addCard('done')" class="btn secondary">+ Adicionar Cartão</button>
-      </div>
-
-      <!-- Coluna especial para adicionar novas -->
-      <div class="add-column column">
-        <input type="text" id="newColumnName" placeholder="Nome da nova coluna" />
-        <button onclick="addColumn()">➕ Adicionar coluna</button>
-      </div>
-
-    </div>
+ <!-- 🔧 Scroll-zone agora fixo no rodapé -->
+<div class="scroll-zone">
+  <div id="board" class="board">
+    <!-- colunas dinâmicas -->
   </div>
+
+  <div class="floating-column-button">
+    <input type="text" id="newColumnName" placeholder="Nova coluna" />
+    <button onclick="addColumn()">➕</button>
+  </div>
+</div>
 
   <!-- ⚙️ Menu toggle e tema -->
   <script>

@@ -119,19 +119,45 @@ function saveCards() {
 }
 
 function renderCards() {
-  ["todo", "in-progress", "done"].forEach(columnId => {
-    const container = document.getElementById(columnId);
-    container.innerHTML = "";
-    const cards = allProjects[currentProject]?.[columnId] || [];
+  const board = document.getElementById("board");
+  board.innerHTML = "";
 
+  const columns = Object.keys(allProjects[currentProject] || {});
+  columns.forEach((columnId) => {
+    const column = document.createElement("div");
+    column.className = "column";
+    column.dataset.column = columnId;
+
+    const titleWrapper = document.createElement("div");
+    titleWrapper.className = "column-title-wrapper";
+
+    const titleText = document.createElement("h2");
+    titleText.textContent = columnId;
+    titleText.className = "column-title";
+    titleText.onclick = () => makeTitleEditable(titleText, columnId);
+
+    titleWrapper.appendChild(titleText);
+    column.appendChild(titleWrapper);
+
+    const cardList = document.createElement("div");
+    cardList.className = "card-list";
+    cardList.id = columnId;
+    column.appendChild(cardList);
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "🗑️ Excluir Coluna";
+    deleteBtn.className = "btn danger";
+    deleteBtn.onclick = () => deleteColumn(columnId);
+    column.appendChild(deleteBtn);
+
+    const cards = allProjects[currentProject][columnId];
     cards.forEach((cardData, index) => {
-      const uniqueId = `${columnId}-${index}`;
       const card = document.createElement("div");
       card.className = "card";
       card.draggable = true;
       card.ondragstart = drag;
 
-      let cardHTML = `
+      card.innerHTML = `
         <div class="card-header">
           <strong class="card-title">${cardData.text}</strong>
           <div class="card-controls">
@@ -139,18 +165,10 @@ function renderCards() {
           </div>
         </div>
         ${cardData.label ? `<span class="tag" style="background:${cardData.label}"></span>` : ""}
+        ${cardData.file ? `<div class="card-attachment"><a href="${cardData.file}" target="_blank">📎 Ver Anexo</a></div>` : ""}
       `;
 
-      if (cardData.file) {
-        const fileName = cardData.file.split("/").pop();
-        cardHTML += `
-          <div class="card-attachment">
-            <a href="${cardData.file}" target="_blank">📎 ${fileName}</a>
-          </div>
-        `;
-      }
-
-      card.innerHTML = cardHTML;
+      cardList.appendChild(card);
 
       const expandButton = card.querySelector(".expand-btn");
       if (expandButton) {
@@ -168,16 +186,16 @@ function renderCards() {
           details.innerHTML = `
             <div class="card-form">
               <label>Texto:
-                <input type="text" id="text-${uniqueId}" value="${cardData.text}" />
+                <input type="text" id="text-${columnId}-${index}" value="${cardData.text}" />
               </label>
               <label>Comentário:
-                <textarea id="comment-${uniqueId}">${cardData.comment || ""}</textarea>
+                <textarea id="comment-${columnId}-${index}">${cardData.comment || ""}</textarea>
               </label>
               <label>Data:
-                <input type="date" id="date-${uniqueId}" value="${cardData.date || ""}" />
+                <input type="date" id="date-${columnId}-${index}" value="${cardData.date || ""}" />
               </label>
               <label>Etiqueta:
-                <select id="label-${uniqueId}">
+                <select id="label-${columnId}-${index}">
                   <option value="">Nenhuma</option>
                   <option value="#ffc107">Amarela</option>
                   <option value="#28a745">Verde</option>
@@ -187,10 +205,8 @@ function renderCards() {
               </label>
               <label>Anexo:
                 <div class="file-wrapper">
-                  <label class="file-button" for="file-${uniqueId}">
-                    📁 Selecionar documento
-                  </label>
-                  <input type="file" id="file-${uniqueId}" style="display:none;" />
+                  <label class="file-button" for="file-${columnId}-${index}">📁 Selecionar documento</label>
+                  <input type="file" id="file-${columnId}-${index}" style="display:none;" />
                 </div>
                 ${cardData.file ? `
                   <div class="card-attachment">
@@ -200,7 +216,7 @@ function renderCards() {
               </label>
 
               <div class="card-actions">
-                <button onclick="saveInline('${uniqueId}', '${columnId}', ${index})" class="btn primary">Salvar</button>
+                <button onclick="saveInline('${columnId}', ${index})" class="btn primary">Salvar</button>
                 <button onclick="deleteInline('${columnId}', ${index})" class="btn danger">Excluir</button>
                 <button onclick="collapseInline(this)" class="btn secondary">Fechar</button>
               </div>
@@ -208,24 +224,33 @@ function renderCards() {
           `;
 
           card.appendChild(details);
-          const labelField = document.getElementById(`label-${uniqueId}`);
-          if (labelField) labelField.value = cardData.label;
+          document.getElementById(`label-${columnId}-${index}`).value = cardData.label;
         };
       }
-
-      container.appendChild(card);
     });
+
+    const addButton = document.createElement("button");
+    addButton.textContent = "+ Adicionar Cartão";
+    addButton.className = "btn secondary";
+    addButton.onclick = () => addCard(columnId);
+    column.appendChild(addButton);
+
+    board.appendChild(column);
   });
+
+  
+
+  positionFloatingButton(); // 👈 Atualiza posição do botão lateral após render
 }
 
-function saveInline(uid, columnId, index) {
+function saveInline(columnId, index) {
   const card = allProjects[currentProject][columnId][index];
-  card.text = document.getElementById(`text-${uid}`).value;
-  card.comment = document.getElementById(`comment-${uid}`).value;
-  card.date = document.getElementById(`date-${uid}`).value;
-  card.label = document.getElementById(`label-${uid}`).value;
+  card.text = document.getElementById(`text-${columnId}-${index}`).value;
+  card.comment = document.getElementById(`comment-${columnId}-${index}`).value;
+  card.date = document.getElementById(`date-${columnId}-${index}`).value;
+  card.label = document.getElementById(`label-${columnId}-${index}`).value;
 
-  const fileInput = document.getElementById(`file-${uid}`);
+  const fileInput = document.getElementById(`file-${columnId}-${index}`);
   const file = fileInput?.files[0];
 
   if (file) {
@@ -309,16 +334,84 @@ const board = document.getElementById("board");
 function addColumn() {
   const input = document.getElementById("newColumnName");
   const name = input.value.trim();
-  if (!name) return;
+  if (!name || allProjects[currentProject][name]) return;
 
-  const column = document.createElement("div");
-  column.className = "column";
-
-  column.innerHTML = `
-    <div class="column-header">${name}</div>
-    <div class="card-container"></div>
-  `;
-
-  board.appendChild(column);
+  allProjects[currentProject][name] = [];
   input.value = "";
+  renderCards();
+  saveCards();
+}
+function positionFloatingButton() {
+  const board = document.getElementById("board");
+  const button = document.querySelector(".floating-column-button");
+  if (!board || !button) return;
+
+  const columns = board.querySelectorAll(".column");
+  if (columns.length === 0) return;
+
+  const lastColumn = columns[columns.length - 1];
+  const scrollLeft = board.scrollLeft;
+  const lastLeft = lastColumn.offsetLeft;
+  const lastWidth = lastColumn.offsetWidth;
+
+  const offsetX = lastLeft + lastWidth - scrollLeft + 20;
+  button.style.left = offsetX + "px";
+
+  const wrapperRect = board.parentElement.getBoundingClientRect();
+  button.style.top = (wrapperRect.top + window.scrollY + 10) + "px";
+}
+
+function deleteColumn(columnId) {
+  const confirmado = confirm(`Tem certeza que deseja excluir a coluna "${columnId}"?`);
+  if (!confirmado) return;
+
+  delete allProjects[currentProject][columnId];
+  renderCards();
+  saveCards();
+}
+
+function makeTitleEditable(titleElement, columnId) {
+  const wrapper = titleElement.parentElement;
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.value = columnId;
+  input.className = "title-input";
+
+  const saveBtn = document.createElement("button");
+  saveBtn.textContent = "💾";
+  saveBtn.className = "save-title-btn";
+
+  // Remove o antigo título
+  titleElement.remove();
+
+  // Adiciona o campo de edição
+  wrapper.appendChild(input);
+  wrapper.appendChild(saveBtn);
+
+  saveBtn.onclick = () => {
+    const newName = input.value.trim();
+
+    if (!newName || newName === columnId) {
+      renderCards();
+      return;
+    }
+
+    if (newName in allProjects[currentProject]) {
+      alert("Já existe uma coluna com esse nome.");
+      return;
+    }
+
+    // Atualiza e salva
+    const colData = allProjects[currentProject][columnId];
+    delete allProjects[currentProject][columnId];
+    allProjects[currentProject][newName] = colData;
+
+    renderCards();
+    saveCards();
+  };
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") saveBtn.click();
+  });
 }
