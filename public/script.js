@@ -128,6 +128,7 @@ function renderCards() {
     column.className = "column";
     column.dataset.column = columnId;
 
+    // 🖊️ Título da coluna com edição
     const titleWrapper = document.createElement("div");
     titleWrapper.className = "column-title-wrapper";
 
@@ -144,6 +145,7 @@ function renderCards() {
     cardList.id = columnId;
     column.appendChild(cardList);
 
+    // Botão para excluir coluna
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "🗑️ Excluir Coluna";
     deleteBtn.className = "btn danger";
@@ -157,16 +159,69 @@ function renderCards() {
       card.draggable = true;
       card.ondragstart = drag;
 
-      card.innerHTML = `
-        <div class="card-header">
-          <strong class="card-title">${cardData.text}</strong>
-          <div class="card-controls">
-            <button class="expand-btn"><i class="fa-solid fa-chevron-down"></i></button>
-          </div>
-        </div>
-        ${cardData.label ? `<span class="tag" style="background:${cardData.label}"></span>` : ""}
-        ${cardData.file ? `<div class="card-attachment"><a href="${cardData.file}" target="_blank">📎 Ver Anexo</a></div>` : ""}
-      `;
+      const cardHeader = document.createElement("div");
+      cardHeader.className = "card-header";
+
+      // 📋 Título editável inline
+      const titleSpan = document.createElement("strong");
+      titleSpan.className = "card-title";
+      titleSpan.textContent = cardData.text;
+
+      titleSpan.onclick = () => {
+        const input = document.createElement("input");
+        input.value = cardData.text;
+        input.className = "card-title-input";
+
+        const save = document.createElement("button");
+        save.textContent = "💾";
+        save.className = "save-card-title";
+
+        titleSpan.replaceWith(input);
+        cardHeader.insertBefore(save, cardHeader.querySelector(".card-controls"));
+
+        save.onclick = () => {
+          cardData.text = input.value.trim();
+          renderCards();
+          saveCards();
+        };
+
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") save.click();
+        });
+      };
+
+      const controls = document.createElement("div");
+      controls.className = "card-controls";
+      controls.innerHTML = `<button class="expand-btn"><i class="fa-solid fa-chevron-down"></i></button>`;
+
+      cardHeader.appendChild(titleSpan);
+      cardHeader.appendChild(controls);
+      card.appendChild(cardHeader);
+
+      if (cardData.label) {
+        const tag = document.createElement("span");
+        tag.className = "tag";
+        tag.style.background = cardData.label;
+        card.appendChild(tag);
+      }
+
+      if (cardData.file) {
+        const fileLink = document.createElement("div");
+        fileLink.className = "card-attachment";
+        fileLink.innerHTML = `<a href="${cardData.file}" target="_blank">📎 Ver Anexo</a>`;
+        card.appendChild(fileLink);
+      }
+
+      // Pré-visualização se for imagem
+        const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp"];
+        const isImage = imageExtensions.some(ext => cardData.file.toLowerCase().endsWith(ext));
+
+        if (isImage) {
+          const preview = document.createElement("img");
+          preview.src = cardData.file;
+          preview.className = "file-preview";
+          card.appendChild(preview);
+        }
 
       cardList.appendChild(card);
 
@@ -238,9 +293,7 @@ function renderCards() {
     board.appendChild(column);
   });
 
-  
-
-  positionFloatingButton(); // 👈 Atualiza posição do botão lateral após render
+  positionFloatingButton();
 }
 
 function saveInline(columnId, index) {

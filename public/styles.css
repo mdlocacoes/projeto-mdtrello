@@ -812,3 +812,26 @@ body {
 .save-title-btn:hover {
   background-color: #218838;
 }
+
+.column-title,
+.edit-title-wrapper {
+  transition: all 0.2s ease;
+}
+
+.edit-title-wrapper {
+  opacity: 0;
+  animation: fadeIn 0.2s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.card-title-input {
+  padding: 4px;
+  font-size: 1rem;
+  border-radius: 4px;
+  width: 100%;
+}
