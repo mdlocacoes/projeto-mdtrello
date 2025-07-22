@@ -132,7 +132,7 @@ body.landing-page.dark-mode {
 
 /* 🌑 Topbar no modo escuro */
 body.dark-mode .topbar {
-  background-color: #222;
+  background-color: #333849;
 }
 
 body.dark-mode .avatar {
@@ -170,9 +170,13 @@ body.dark-mode .theme-button {
   min-width: 280px;
   background: #f4f4f4;
   border-radius: 8px;
-  padding: 10px;
   flex-shrink: 0;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+  padding: 12px;
+  background-color: #f8f9fa;
+
 }
 
 body.dark-mode .column {
@@ -369,13 +373,12 @@ body.dark-mode .column {
 }
 /* 🔘 Botões padrão */
 .btn {
-  text-decoration: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: inline-block;
+  min-width: 140px;
+  padding: 6px 12px;
+  text-align: center;
 }
+
 
 .btn:hover {
   transform: scale(1.05);
@@ -711,11 +714,6 @@ body.dark-mode .modal-content {
   min-width: max-content;
 }
 
-/* ⛔ Impede rolagem no body de forma geral */
-body {
-  overflow-x: hidden;
-}
-
 /*excluir coluna*/
 
 .btn.danger {
@@ -749,6 +747,8 @@ body {
   background-color: #dc3545;
   color: white;
   border: none;
+  border-radius: 6px;
+  margin-top: 8px;
 }
 
 .btn.danger:hover {
@@ -834,4 +834,23 @@ body {
   font-size: 1rem;
   border-radius: 4px;
   width: 100%;
+}
+
+@media (max-width: 768px) {
+  .board {
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  .column {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  .floating-column-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+  }
 }
