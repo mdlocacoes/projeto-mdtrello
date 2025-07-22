@@ -118,7 +118,6 @@ function saveCards() {
   });
 }
 
-// 🖼️ Renderiza cartões do quadro atual
 function renderCards() {
   ["todo", "in-progress", "done"].forEach(columnId => {
     const container = document.getElementById(columnId);
@@ -132,7 +131,7 @@ function renderCards() {
       card.draggable = true;
       card.ondragstart = drag;
 
-      card.innerHTML = `
+      let cardHTML = `
         <div class="card-header">
           <strong class="card-title">${cardData.text}</strong>
           <div class="card-controls">
@@ -142,10 +141,20 @@ function renderCards() {
         ${cardData.label ? `<span class="tag" style="background:${cardData.label}"></span>` : ""}
       `;
 
+      if (cardData.file) {
+        const fileName = cardData.file.split("/").pop();
+        cardHTML += `
+          <div class="card-attachment">
+            <a href="${cardData.file}" target="_blank">📎 ${fileName}</a>
+          </div>
+        `;
+      }
+
+      card.innerHTML = cardHTML;
+
       const expandButton = card.querySelector(".expand-btn");
       if (expandButton) {
         expandButton.onclick = () => {
-          console.log("🧠 Expandindo cartão:", cardData.text);
           card.classList.toggle("expanded");
 
           const existedDetails = card.querySelector(".card-details");
@@ -158,9 +167,15 @@ function renderCards() {
           details.className = "card-details";
           details.innerHTML = `
             <div class="card-form">
-              <label>Texto: <input type="text" id="text-${uniqueId}" value="${cardData.text}" /></label>
-              <label>Comentário:<textarea id="comment-${uniqueId}">${cardData.comment || ""}</textarea></label>
-              <label>Data: <input type="date" id="date-${uniqueId}" value="${cardData.date || ""}" /></label>
+              <label>Texto:
+                <input type="text" id="text-${uniqueId}" value="${cardData.text}" />
+              </label>
+              <label>Comentário:
+                <textarea id="comment-${uniqueId}">${cardData.comment || ""}</textarea>
+              </label>
+              <label>Data:
+                <input type="date" id="date-${uniqueId}" value="${cardData.date || ""}" />
+              </label>
               <label>Etiqueta:
                 <select id="label-${uniqueId}">
                   <option value="">Nenhuma</option>
@@ -170,7 +185,19 @@ function renderCards() {
                   <option value="#dc3545">Vermelha</option>
                 </select>
               </label>
-              <label>Anexo (URL): <input type="text" id="file-${uniqueId}" value="${cardData.file || ""}" /></label>
+              <label>Anexo:
+                <div class="file-wrapper">
+                  <label class="file-button" for="file-${uniqueId}">
+                    📁 Selecionar documento
+                  </label>
+                  <input type="file" id="file-${uniqueId}" style="display:none;" />
+                </div>
+                ${cardData.file ? `
+                  <div class="card-attachment">
+                    <a href="${cardData.file}" target="_blank">📎 Ver Anexo</a>
+                    <button type="button" class="remove-file" onclick="removeFile('${columnId}', ${index})">❌ Remover</button>
+                  </div>` : ""}
+              </label>
 
               <div class="card-actions">
                 <button onclick="saveInline('${uniqueId}', '${columnId}', ${index})" class="btn primary">Salvar</button>
@@ -179,7 +206,8 @@ function renderCards() {
               </div>
             </div>
           `;
-         card.appendChild(details);
+
+          card.appendChild(details);
           const labelField = document.getElementById(`label-${uniqueId}`);
           if (labelField) labelField.value = cardData.label;
         };
@@ -191,20 +219,18 @@ function renderCards() {
 }
 
 function saveInline(uid, columnId, index) {
-  const text = document.getElementById(`text-${uid}`).value;
-  const comment = document.getElementById(`comment-${uid}`).value;
-  const date = document.getElementById(`date-${uid}`).value;
-  const label = document.getElementById(`label-${uid}`).value;
-  const file = document.getElementById(`file-${uid}`).value;
+  const card = allProjects[currentProject][columnId][index];
+  card.text = document.getElementById(`text-${uid}`).value;
+  card.comment = document.getElementById(`comment-${uid}`).value;
+  card.date = document.getElementById(`date-${uid}`).value;
+  card.label = document.getElementById(`label-${uid}`).value;
 
-  const cards = allProjects[currentProject][columnId];
-  const card = cards[index]; // usa índice direto — mais confiável
+  const fileInput = document.getElementById(`file-${uid}`);
+  const file = fileInput?.files[0];
 
-  card.text = text;
-  card.comment = comment;
-  card.date = date;
-  card.label = label;
-  card.file = file;
+  if (file) {
+    card.file = URL.createObjectURL(file);
+  }
 
   renderCards();
   saveCards();
@@ -270,4 +296,29 @@ function drop(ev) {
   allProjects[currentProject][column].push({ text: texto, comment: "", date: "", label: "", file: "" });
   renderCards();
   saveCards();
+}
+
+function removeFile(columnId, index) {
+  allProjects[currentProject][columnId][index].file = "";
+  renderCards();
+  saveCards();
+}
+
+const board = document.getElementById("board");
+
+function addColumn() {
+  const input = document.getElementById("newColumnName");
+  const name = input.value.trim();
+  if (!name) return;
+
+  const column = document.createElement("div");
+  column.className = "column";
+
+  column.innerHTML = `
+    <div class="column-header">${name}</div>
+    <div class="card-container"></div>
+  `;
+
+  board.appendChild(column);
+  input.value = "";
 }
