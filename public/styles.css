@@ -176,7 +176,11 @@ body.dark-mode .theme-button {
   overflow: hidden;
   padding: 12px;
   background-color: #f8f9fa;
-
+  max-height: calc(100vh - 160px);
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 body.dark-mode .column {
@@ -252,14 +256,10 @@ body.dark-mode .column {
 }
 /* 📝 Container do formulário no cartão */
 .card-details {
-  display: block;
-  max-height: none;
-  overflow: visible;
-  padding: 10px;
-  margin-top: 10px;
-  font-size: 0.95rem;
-  background-color: #f9f9f9;
-  border-top: 1px solid #ccc;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .card.expanded .card-details {
@@ -279,6 +279,8 @@ body.dark-mode .column {
 .card-form textarea,
 .card-form select {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 8px;
   margin-top: 4px;
   border: 1px solid #ccc;
@@ -853,4 +855,50 @@ body.dark-mode .modal-content {
     right: 20px;
     z-index: 100;
   }
+}.card-counter {
+  font-size: 0.85rem;
+  font-weight: bold;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-counter i {
+  color: inherit;
+}
+
+/*ESTILO DA BARRA DE PESQUISA*/
+.search-bar {
+  width: 10%;
+  padding: 12px 16px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/*CUSTOMIZAÇÃO POR USUÁRIO*/
+.customization-panel {
+  padding: 12px;
+  border-top: 1px solid #ccc;
+  background: #f4f4f4;
+}
+.customization-panel label {
+  display: block;
+  margin-top: 8px;
+  font-weight: bold;
+}
+.customization-panel input,
+.customization-panel select {
+  margin-top: 4px;
+  width: 100%;
 }

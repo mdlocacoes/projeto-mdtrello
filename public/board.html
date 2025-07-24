@@ -13,6 +13,11 @@
   <!-- 🔵 Topbar com tema e menu -->
   <div class="topbar">
     <div class="logo"><i class="fa-solid fa-layer-group"></i> MD Tasks</div>
+
+    <div class="search-bar">
+      <input type="text" id="cardSearch" placeholder="🔍 Buscar cartão..." />
+    </div>
+
     <div class="user-section">
       <button onclick="toggleTheme()" class="theme-button" title="Tema"><i class="fa-solid fa-moon"></i></button>
       <button id="menuToggle" class="theme-button" title="Menu"><i class="fa-solid fa-bars"></i></button>
@@ -32,6 +37,18 @@
     <button onclick="createNewProject()" class="btn primary">+ Novo Quadro</button>
     <button onclick="renameProject()" class="btn secondary">Renomear</button>
     <button onclick="deleteProject()" class="btn secondary">Excluir</button>
+
+
+    <div class="customization-panel">
+        <label for="bgColorPicker">Cor de fundo:</label>
+        <input type="color" id="bgColorPicker" />
+
+        <label for="themeToggle">Tema:</label>
+      <select id="themeToggle">
+        <option value="light">Claro</option>
+        <option value="dark">Escuro</option>
+      </select>
+    </div>
   </aside>
 
  <!-- 🔧 Scroll-zone agora fixo no rodapé -->
