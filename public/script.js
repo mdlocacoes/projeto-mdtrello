@@ -497,6 +497,10 @@ function renderCards() {
                   </div>` : ""}
               </label>
 
+              <label>Tags (separadas por vírgula):
+                <input type="text" id="tags-${columnId}-${index}" value="${(cardData.tags || []).join(', ')}" />
+              </label>
+
               <div class="card-actions">
                 <button onclick="saveInline('${columnId}', ${cardIndex})" class="btn primary">Salvar</button>
                 <button onclick="deleteInline('${columnId}', ${cardIndex})" class="btn danger">Excluir</button>
@@ -526,16 +530,27 @@ function renderCards() {
 
 function saveInline(columnId, index) {
   const card = allProjects[currentProject][columnId][index];
+
+  // 📝 Campos principais
   card.text = document.getElementById(`text-${columnId}-${index}`).value;
   card.comment = document.getElementById(`comment-${columnId}-${index}`).value;
   card.date = document.getElementById(`date-${columnId}-${index}`).value;
   card.label = document.getElementById(`label-${columnId}-${index}`).value;
 
+  // 📎 Anexo
   const fileInput = document.getElementById(`file-${columnId}-${index}`);
   const file = fileInput?.files[0];
-
   if (file) {
     card.file = URL.createObjectURL(file);
+  }
+
+  // 🏷️ Tags
+  const tagInput = document.getElementById(`tags-${columnId}-${index}`);
+  if (tagInput) {
+    card.tags = tagInput.value
+      .split(',')
+      .map(t => t.trim())
+      .filter(t => t.length > 0);
   }
 
   renderCards();
@@ -566,12 +581,13 @@ function addCard(column) {
   if (!content || !currentProject) return;
 
   const newCard = {
-    text: content,
-    comment: "",
-    date: "",
-    label: "",
-    file: ""
-  };
+  text: content,
+  comment: "",
+  date: "",
+  label: "",
+  file: "",
+  tags: [] // 🆕 novo campo
+};
 
   allProjects[currentProject][column].push(newCard);
   renderCards();
@@ -777,4 +793,13 @@ function formatDateVariants(dateStr) {
   if (!dateStr || !dateStr.includes("-")) return "";
   const [year, month, day] = dateStr.split("-");
   return `${year}-${month}-${day} ${day}/${month}/${year} ${day}-${month}-${year}`;
+}
+
+function filterByTag(tagName) {
+  const allCards = document.querySelectorAll(".card");
+  allCards.forEach(card => {
+    const tags = card.querySelectorAll(".card-tag");
+    const match = Array.from(tags).some(t => t.textContent.toLowerCase() === tagName.toLowerCase());
+    card.style.display = match ? "" : "none";
+  });
 }

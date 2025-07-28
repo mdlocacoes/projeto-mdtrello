@@ -902,3 +902,21 @@ body.dark-mode .modal-content {
   margin-top: 4px;
   width: 100%;
 }
+
+/*tags*/
+
+.card-tags {
+  display: flex;
+  gap: 6px;
+  margin: 6px 0;
+  flex-wrap: wrap;
+}
+
+.card-tag {
+  background: #eee;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: #333;
+  font-weight: 500;
+}
