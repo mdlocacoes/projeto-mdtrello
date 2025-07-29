@@ -1,922 +1,478 @@
-/* 🌍 Reset e tema geral */
-
-/* * {
-  outline: 1px solid red;
+/**{
+  outline: 1px solid red; 
 } */
-body {
-  font-family: 'Inter', Arial, sans-serif;
-  margin: 0;
-  background-color: #f4f4f4;
-  color: #222;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  overflow-x: hidden;
+
+body { 
+  font-family: 'Inter', Arial, sans-serif; 
+  margin: 0; 
+  background-color: #f4f4f4; 
+  color: #222; 
+  transition: background-color 0.3s ease, color 0.3s ease; 
+  overflow-x: hidden; 
 }
 
-body.dark-mode {
-  background-color: #1f1f1f;
-  color: #eee;
+body.dark-mode { 
+  background-color: #1f1f1f; 
+  color: #eee; 
 }
 
-/* 🌅 Tela de boas-vindas (landing page) */
-body.landing-page {
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #026aa7, #00bcd4);
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  text-align: center;
-  padding: 2rem;
-  transition: background 0.3s ease;
+/* 🌅 Tela de boas-vindas (landing page) */ 
+body.landing-page { 
+  font-family: 'Inter', sans-serif; 
+  background: linear-gradient(135deg, #026aa7, #00bcd4); 
+  color: white; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  height: 100vh; 
+  text-align: center; 
+  padding: 2rem; 
+  transition: background 0.3s ease; 
 }
 
-body.landing-page.dark-mode {
-  background: linear-gradient(135deg, #1f1f1f, #333);
+body.landing-page.dark-mode { 
+  background: linear-gradient(135deg, #1f1f1f, #333); 
 }
 
-/* 📢 Título e subtítulo */
-.container h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+/* 📢 Título e subtítulo */ 
+.container h1 { 
+  font-size: 2.5rem; 
+  margin-bottom: 0.5rem; 
 }
 
-.subtitle {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-  opacity: 0.9;
+.subtitle { 
+  font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9; 
+} 
+
+/* 🚀 Topbar fixo no topo */ 
+.topbar { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  background: #026aa7; 
+  color: white; 
+  padding: 0.8rem 1.2rem; 
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15); 
+  font-size: 1rem; position: sticky; 
+  top: 0; 
+  z-index: 10; 
 }
-/* 🚀 Topbar fixo no topo */
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #026aa7;
-  color: white;
-  padding: 0.8rem 1.2rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  font-size: 1rem;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+.topbar .logo { 
+  font-weight: bold; font-size: 1.2rem; transition: transform 0.2s ease; 
+}
+.topbar .logo:hover { 
+  transform: scale(1.05); 
+}
+/* 👤 Seção de usuário e ícones */ 
+.user-section { 
+  display: flex; 
+  align-items: center; 
+  gap: 0.5rem; 
+}
+.avatar { 
+  background: white; 
+  color: #026aa7; 
+  width: 32px; 
+  height: 32px; 
+  border-radius: 50%; 
+  text-align: center; 
+  line-height: 32px; 
+  font-weight: bold; 
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2); 
+  transition: transform 0.3s ease; }
+
+.avatar:hover { 
+  transform: rotate(6deg); 
+}
+#userName { 
+  font-weight: bold; 
+}
+/* 🌙 Botão de tema / menu */ 
+.theme-button { 
+  background: #fff; 
+  color: #026aa7; 
+  border: none; 
+  font-size: 1.2rem; 
+  border-radius: 50%; 
+  width: 32px; 
+  height: 32px; 
+  cursor: pointer; 
+  transition: transform 0.3s ease; 
 }
 
-.topbar .logo {
-  font-weight: bold;
-  font-size: 1.2rem;
-  transition: transform 0.2s ease;
+.theme-button:hover { 
+  transform: rotate(20deg); 
 }
 
-.topbar .logo:hover {
-  transform: scale(1.05);
-}
-
-/* 👤 Seção de usuário e ícones */
-.user-section {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.avatar {
-  background: white;
-  color: #026aa7;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 32px;
-  font-weight: bold;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease;
-}
-
-.avatar:hover {
-  transform: rotate(6deg);
-}
-
-#userName {
-  font-weight: bold;
-}
-
-/* 🌙 Botão de tema / menu */
-.theme-button {
-  background: #fff;
-  color: #026aa7;
-  border: none;
-  font-size: 1.2rem;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.theme-button:hover {
-  transform: rotate(20deg);
-}
-
-/* 🚪 Botão de logout */
-.logout-button {
-  background-color: #d33;
-  color: white;
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 5px;
+/* 🚪 Botão de logout */ 
+.logout-button { 
+  background-color: #d33; 
+  color: white; 
+  border: none; 
+  padding: 0.4rem 0.8rem; 
+  border-radius: 5px; 
   cursor: pointer;
 }
-
-.logout-button:hover {
-  background-color: #b00;
-}
-
-/* 🌑 Topbar no modo escuro */
+.logout-button:hover { 
+  background-color: #b00; }
+/* 🌑 Topbar no modo escuro */ 
 body.dark-mode .topbar {
-  background-color: #333849;
+   background-color: #333849; 
 }
-
 body.dark-mode .avatar {
-  background-color: #444;
-  color: white;
+  background-color: #444; color: white; 
+}
+body.dark-mode .theme-button { 
+  background-color: #444; color: white; 
+
+} /* 🧱 Estrutura horizontal do board / /.board-wrapper { overflow-x: auto; padding: 10px; }*/
+.board-wrapper { 
+  position: relative; overflow-x: auto; width: 100%;
+}
+.board { 
+  display: flex; padding: 1rem; gap: 12px; padding-bottom: 10px; min-width: max-content; 
+}
+/* 🧱 Colunas */ 
+.column { 
+  min-width: 280px; background: #f4f4f4; border-radius: 8px; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative; overflow: hidden; padding: 12px; background-color: #f8f9fa; max-height: calc(100vh - 160px); display: flex; flex-direction: column; overflow-x: hidden; overflow-y: auto; }
+body.dark-mode .column { 
+  background-color: #333; 
 }
 
-body.dark-mode .theme-button {
-  background-color: #444;
-  color: white;
+/* ➕ Coluna de criação */ 
+.add-column.column { 
+  background-color: #e0f7fa; 
+  border: 2px dashed #00bcd4; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: stretch; 
+  min-width: 220px; 
+  padding: 10px; 
+  border-radius: 8px; 
+  gap: 6px; 
 }
-/* 🧱 Estrutura horizontal do board */
-/*.board-wrapper {
-  overflow-x: auto;
-  padding: 10px;
-}*/
-
-.board-wrapper {
-  position: relative;
-  overflow-x: auto;
-  width: 100%;
+.add-column input { 
+  padding: 6px; 
+  border-radius: 6px; 
+  border: 1px solid #bbb; 
+}
+.add-column button { 
+  padding: 6px; 
+  border-radius: 6px; 
+  background-color: #00bcd4; 
+  color: white; 
+  font-weight: bold; 
+  border: none; 
+  cursor: pointer; 
+}
+.add-column button:hover { 
+  background-color: #0097a7; 
 
 }
-
-.board {
-  display: flex;
-  padding: 1rem;
-  gap: 12px;
-  padding-bottom: 10px;
-  min-width: max-content;
+/* 🎴 Cartões */ 
+.card { 
+  background-color: white; 
+  color: #333; 
+  border-radius: 12px; 
+  padding: 1rem; 
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+  margin-bottom: 1rem; 
+  position: relative; 
+  transition: all 0.3s ease; 
+  cursor: move; 
 }
-
-/* 🧱 Colunas */
-.column {
-  min-width: 280px;
-  background: #f4f4f4;
-  border-radius: 8px;
-  flex-shrink: 0;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  position: relative;
-  overflow: hidden;
-  padding: 12px;
-  background-color: #f8f9fa;
-  max-height: calc(100vh - 160px);
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
-  overflow-y: auto;
+.card:hover { 
+  transform: scale(1.03); 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15); 
 }
-
-body.dark-mode .column {
-  background-color: #333;
-}
-
-/* ➕ Coluna de criação */
-.add-column.column {
-  background-color: #e0f7fa;
-  border: 2px dashed #00bcd4;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
-  min-width: 220px;
-  padding: 10px;
-  border-radius: 8px;
-  gap: 6px;
+.dark-mode .card { 
+  background-color: #1e1e1e; 
+  color: #eee; 
 }
 
-.add-column input {
-  padding: 6px;
-  border-radius: 6px;
-  border: 1px solid #bbb;
-}
-
-.add-column button {
-  padding: 6px;
-  border-radius: 6px;
-  background-color: #00bcd4;
-  color: white;
+/* 🧠 Cartão expandido */ 
+.card.expanded { 
+  border: 2px solid #17a2b8; background-color: #f0f8ff; }
+.dark-mode .card.expanded { background-color: #222; border-color: #17a2b8; } /* 📝 Container do formulário no cartão */ .card-details { width: 100%; max-width: 100%; box-sizing: border-box; overflow-x: hidden; }
+.card.expanded .card-details { opacity: 1; max-height: 1000px; }
+/* 🔤 Campos do formulário */ 
+.card-form label { font-weight: bold; font-size: 0.9rem; margin-bottom: 6px; display: block; }
+.card-form input, .card-form textarea, .card-form select { width: 100%; max-width: 100%; box-sizing: border-box; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.95rem; background-color: #fff; color: #222; transition: border-color 0.2s ease; }
+.card-form input:focus, .card-form textarea:focus, .card-form select:focus { border-color: #00bcd4; outline: none; }
+/* 🌙 Campos no modo escuro / .dark-mode .card-form input, .dark-mode .card-form textarea, .dark-mode .card-form select { background-color: #2b2b2b; color: white; border-color: #555; } / 📎 Área visual de anexo */ .card-attachment { margin-top: 6px; font-size: 0.9rem; }
+.card-attachment a { color: #0077cc; text-decoration: none; }
+.card-attachment a:hover { text-decoration: underline; }
+/* 🌙 Modo escuro para links de anexo */ 
+.dark-mode .card-attachment a { color: #63b3ed; }
+/* 📁 Botão visual para selecionar arquivo */ 
+.file-wrapper { margin-top: 6px; }
+.file-button { display: inline-block; padding: 6px 10px; background-color: #eee; border-radius: 6px; cursor: pointer; font-size: 0.9rem; color: #333; font-weight: 500; border: 1px solid #ccc; transition: background-color 0.3s ease; }
+.file-button:hover { background-color: #ddd; }
+.dark-mode .file-button { background-color: #444; color: #fff; border-color: #666; }
+/* ❌ Botão de remover arquivo */ 
+.remove-file { background-color: transparent; border: none; color: #d33; font-size: 0.9rem; margin-left: 8px; cursor: pointer; font-weight: bold; }
+.remove-file:hover { text-decoration: underline; }
+.dark-mode .remove-file { color: #ff6f6f; }
+/* 🔘 Botões padrão */ 
+.btn { display: inline-block; min-width: 140px; padding: 6px 12px; text-align: center; }
+.btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+.btn.primary {padding: 12px;
+  font-size: 1rem;
   font-weight: bold;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1e90ff, #007bff);
+  color: white;
   border: none;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.btn.secondary { background-color: #222; color: #fff; }
+/* 🌓 Temas para landing-page */ 
+body.landing-page.dark-mode .btn.primary { background-color: #eee; color: #026aa7; }
+body.landing-page.dark-mode .btn.secondary { background-color: #444; color: #fff; }
+/* 🎯 Efeitos de clique */ 
+button, select { transition: background-color 0.2s ease, transform 0.2s ease; }
+button:hover { transform: scale(1.05); }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
+button:active { animation: pulse 0.3s ease; }
+/* 🏷️ Tags coloridas */ 
+.tag { display: inline-block; padding: 4px 10px; border-radius: 8px; font-size: 0.8rem; color: #fff; margin-top: 0.4rem; }
+/* 📱 Menu lateral mobile */ 
+.mobile-menu { position: fixed; top: 0; right: -100%; width: 250px; height: 100%; background: #026aa7; color: white; display: flex; flex-direction: column; gap: 1rem; padding: 1rem; transition: right 0.3s ease; z-index: 15; }
+.mobile-menu.open { right: 0; }
+.user-box { display: flex; justify-content: space-between; align-items: center; }
+.mobile-menu .btn { width: 100%; text-align: left; font-size: 1rem; }
+.mobile-menu select { padding: 0.4rem; border-radius: 6px; font-size: 1rem; }
+/* 📱 Responsivo para telas menores */ 
+@media (max-width: 768px) { .topbar .logo { font-size: 1rem; }
+.theme-button { font-size: 1.1rem; }
+.board { flex-direction: column; padding: 1rem; }
+.column { width: 100%; } }
+/* 🪟 Modal de edição */ 
+.card-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 20; }
+.modal-content { background: white; padding: 1.5rem; border-radius: 10px; width: 300px; font-family: sans-serif; display: flex; flex-direction: column; gap: 0.75rem; }
+.modal-content label { display: flex; flex-direction: column; font-weight: bold; }
+.modal-actions { display: flex; justify-content: space-between; margin-top: 1rem; }
+.modal-actions button { padding: 0.5rem 1rem; cursor: pointer; }
+body.dark-mode .modal-content { background: #2c2c2c; color: white; }
+/*para colocar o botão de adcionar coluna fixo*/ .create-column { display: flex; flex-direction: column; justify-content: center; align-items: stretch; min-width: 160px; max-width: 180px; padding: 10px; gap: 6px; background-color: #e6f9ff; border: 2px dashed #00bcd4; border-radius: 8px; flex-shrink: 0; }
+.create-column input { padding: 6px; border-radius: 6px; border: 1px solid #bbb; font-size: 0.9rem; }
+.create-column button { padding: 6px; border-radius: 6px; background-color: #00bcd4; color: white; font-weight: bold; border: none; cursor: pointer; }
+.create-column button:hover { background-color: #0097a7; }
+.floating-button { position: absolute; top: 90px; /* ajusta conforme seu layout */ display: flex; gap: 6px; z-index: 15; }
+.floating-button input { padding: 6px; border-radius: 6px; border: 1px solid #bbb; font-size: 0.9rem; width: 160px; }
+.floating-button button { padding: 6px 12px; background-color: #00bcd4; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+.floating-button button:hover { background-color: #0097a7; }
+.column-button { min-width: auto; max-width: none; background: transparent; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; padding: 10px; gap: 6px; flex-shrink: 0; }
+.column-button input { padding: 6px; border-radius: 6px; border: 1px solid #bbb; font-size: 0.9rem; width: 160px; }
+.column-button button { padding: 6px 12px; border-radius: 6px; background-color: #00bcd4; color: white; border: none; font-weight: bold; cursor: pointer; }
+.column-button button:hover { background-color: #0097a7; }
+.floating-column-button { position: absolute; top: 70px; display: flex; gap: 6px; z-index: 20; }
+.floating-column-button input { padding: 6px; border-radius: 6px; border: 1px solid #bbb; font-size: 0.9rem; width: 160px; }
+.floating-column-button button { padding: 6px 12px; background-color: #00bcd4; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+.floating-column-button button:hover { background-color: #0097a7; }
+.floating-column-button { position: absolute; top: 10px; left: auto; right: 20px; z-index: 10; display: flex; gap: 6px; }
+.floating-column-button input { padding: 6px; border-radius: 6px; font-size: 0.9rem; width: 160px; }
+.floating-column-button button { padding: 6px 12px; background-color: #00bcd4; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+.floating-column-button button:hover { background-color: #0097a7; }
+/* 📐 Zona da rolagem horizontal com posição visível */ .scroll-zone { position: relative; overflow-x: auto; margin-bottom: 20vh; } .board { display: flex; gap: 12px; min-width: max-content; }
+/*excluir coluna*/
+.btn.danger { background-color: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; }
+.btn.danger:hover { background-color: #b02a37; }
+.btn.secondary {
+  border-radius: 1rem;
+  background-color: #555;         /* Tom neutro escuro */
+  color: #fff;                    /* Texto branco */
+  padding: 12px 24px;             /* Mais espaço interno */
+  font-size: 16px;                /* Tamanho do texto confortável */
+  font-weight: 600;               /* Fonte mais marcante */
+  border: none;                   /* Sem borda padrão */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Sombra suave */
+  cursor: pointer;                /* Mãozinha no hover */
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.add-column button:hover {
-  background-color: #0097a7;
+/* Efeito no hover */
+.btn.secondary:hover {
+  background-color: #888;         /* Tom mais claro no hover */
+  transform: scale(1.05);         /* Leve aumento ao passar o mouse */
 }
+.column .btn { padding: 6px 14px; 
+  border-radius: 6px; font-size: 0.9rem; margin-top: 8px; min-width: 160px; }
+/* Aplica espaçamento entre os dois botões */ .column .btn + .btn { margin-left: 10px; }
+/* Estilo do botão de excluir */ .btn.danger { background-color: #dc3545; color: white; border: none; border-radius: 6px; margin-top: 8px; }
+.btn.danger:hover { background-color: #b02a37; }
+/* Estilo do botão de adicionar */ .btn.secondary { background-color: #343a40; color: white; border: none; }
+.btn.secondary:hover { background-color: #23272b; }
 
-/* 🎴 Cartões */
-.card {
-  background-color: white;
-  color: #333;
+.form-box {
+  background-color: #ffffff;
   border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  margin-bottom: 1rem;
-  position: relative;
-  transition: all 0.3s ease;
-  cursor: move;
-}
-
-.card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-.dark-mode .card {
-  background-color: #1e1e1e;
-  color: #eee;
-}
-
-/* 🧠 Cartão expandido */
-.card.expanded {
-  border: 2px solid #17a2b8;
-  background-color: #f0f8ff;
-}
-
-.dark-mode .card.expanded {
-  background-color: #222;
-  border-color: #17a2b8;
-}
-/* 📝 Container do formulário no cartão */
-.card-details {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow-x: hidden;
-}
-
-.card.expanded .card-details {
-  opacity: 1;
-  max-height: 1000px;
-}
-
-/* 🔤 Campos do formulário */
-.card-form label {
-  font-weight: bold;
-  font-size: 0.9rem;
-  margin-bottom: 6px;
-  display: block;
-}
-
-.card-form input,
-.card-form textarea,
-.card-form select {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  padding: 8px;
-  margin-top: 4px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.95rem;
-  background-color: #fff;
-  color: #222;
-  transition: border-color 0.2s ease;
-}
-
-.card-form input:focus,
-.card-form textarea:focus,
-.card-form select:focus {
-  border-color: #00bcd4;
-  outline: none;
-}
-
-/* 🌙 Campos no modo escuro */
-.dark-mode .card-form input,
-.dark-mode .card-form textarea,
-.dark-mode .card-form select {
-  background-color: #2b2b2b;
-  color: white;
-  border-color: #555;
-}
-/* 📎 Área visual de anexo */
-.card-attachment {
-  margin-top: 6px;
-  font-size: 0.9rem;
-}
-
-.card-attachment a {
-  color: #0077cc;
-  text-decoration: none;
-}
-
-.card-attachment a:hover {
-  text-decoration: underline;
-}
-
-/* 🌙 Modo escuro para links de anexo */
-.dark-mode .card-attachment a {
-  color: #63b3ed;
-}
-
-/* 📁 Botão visual para selecionar arquivo */
-.file-wrapper {
-  margin-top: 6px;
-}
-
-.file-button {
-  display: inline-block;
-  padding: 6px 10px;
-  background-color: #eee;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  color: #333;
-  font-weight: 500;
-  border: 1px solid #ccc;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 0 auto 32px auto; /* separa verticalmente dos botões abaixo */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   transition: background-color 0.3s ease;
 }
 
-.file-button:hover {
-  background-color: #ddd;
+body.dark-mode .form-box {
+  background-color: #2c2c2c;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
-.dark-mode .file-button {
-  background-color: #444;
-  color: #fff;
-  border-color: #666;
+
+.form-box input[type="text"],
+.form-box input[type="password"] {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* ❌ Botão de remover arquivo */
-.remove-file {
-  background-color: transparent;
-  border: none;
-  color: #d33;
-  font-size: 0.9rem;
-  margin-left: 8px;
-  cursor: pointer;
+.form-box input:focus {
+  border-color: #00bcd4;
+  box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.2);
+  outline: none;
+}
+
+body.dark-mode .form-box input {
+  background-color: #333;
+  color: white;
+  border-color: #555;
+}
+
+/* Estilo para botão de submit */
+.form-box .btn.primary {
+  padding: 12px;
+  font-size: 1rem;
   font-weight: bold;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1e90ff, #007bff);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.remove-file:hover {
-  text-decoration: underline;
-}
-
-.dark-mode .remove-file {
-  color: #ff6f6f;
-}
-/* 🔘 Botões padrão */
-.btn {
-  display: inline-block;
-  min-width: 140px;
-  padding: 6px 12px;
-  text-align: center;
-}
-
-
-.btn:hover {
+.form-box .btn.primary:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
 }
-
-.btn.primary {
-  background-color: #ffffff;
-  color: #026aa7;
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
 }
-
-.btn.secondary {
-  background-color: #222;
-  color: #fff;
-}
-
-/* 🌓 Temas para landing-page */
-body.landing-page.dark-mode .btn.primary {
-  background-color: #eee;
-  color: #026aa7;
-}
-
-body.landing-page.dark-mode .btn.secondary {
+.actions .btn.secondary {
+  border-radius: 12px;
   background-color: #444;
-  color: #fff;
+  color: white;
+  padding: 12px 20px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* 🎯 Efeitos de clique */
-button, select {
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-button:hover {
+.actions .btn.secondary:hover {
+  background-color: #666;
   transform: scale(1.05);
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-  100% { transform: scale(1); }
-}
-
-button:active {
-  animation: pulse 0.3s ease;
-}
-
-/* 🏷️ Tags coloridas */
-.tag {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  color: #fff;
-  margin-top: 0.4rem;
-}
-
-/* 📱 Menu lateral mobile */
-.mobile-menu {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 250px;
-  height: 100%;
-  background: #026aa7;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-  transition: right 0.3s ease;
-  z-index: 15;
-}
-
-.mobile-menu.open {
-  right: 0;
-}
-
-.user-box {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.mobile-menu .btn {
-  width: 100%;
-  text-align: left;
-  font-size: 1rem;
-}
-
-.mobile-menu select {
-  padding: 0.4rem;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-/* 📱 Responsivo para telas menores */
-@media (max-width: 768px) {
-  .topbar .logo {
-    font-size: 1rem;
-  }
-
-  .theme-button {
-    font-size: 1.1rem;
-  }
-
-  .board {
-    flex-direction: column;
-    padding: 1rem;
-  }
-
-  .column {
-    width: 100%;
-  }
-}
-
-/* 🪟 Modal de edição */
-.card-modal {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 20;
-}
-
-.modal-content {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 10px;
-  width: 300px;
-  font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.modal-content label {
-  display: flex;
-  flex-direction: column;
-  font-weight: bold;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-}
-
-.modal-actions button {
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-}
-
-body.dark-mode .modal-content {
-  background: #2c2c2c;
-  color: white;
-}
-
-/*para colocar o botão de adcionar coluna fixo*/
-.create-column {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
-  min-width: 160px;
-  max-width: 180px;
-  padding: 10px;
-  gap: 6px;
-  background-color: #e6f9ff;
-  border: 2px dashed #00bcd4;
-  border-radius: 8px;
-  flex-shrink: 0;
-}
-
-.create-column input {
-  padding: 6px;
-  border-radius: 6px;
-  border: 1px solid #bbb;
-  font-size: 0.9rem;
-}
-
-.create-column button {
-  padding: 6px;
-  border-radius: 6px;
-  background-color: #00bcd4;
-  color: white;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-}
-
-.create-column button:hover {
-  background-color: #0097a7;
-}
-
-.floating-button {
-  position: absolute;
-  top: 90px; /* ajusta conforme seu layout */
-  display: flex;
-  gap: 6px;
-  z-index: 15;
-}
-
-.floating-button input {
-  padding: 6px;
-  border-radius: 6px;
-  border: 1px solid #bbb;
-  font-size: 0.9rem;
-  width: 160px;
-}
-
-.floating-button button {
-  padding: 6px 12px;
-  background-color: #00bcd4;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.floating-button button:hover {
-  background-color: #0097a7;
-}
-
-.column-button {
-  min-width: auto;
-  max-width: none;
-  background: transparent;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 10px;
-  gap: 6px;
-  flex-shrink: 0;
-}
-
-.column-button input {
-  padding: 6px;
-  border-radius: 6px;
-  border: 1px solid #bbb;
-  font-size: 0.9rem;
-  width: 160px;
-}
-
-.column-button button {
-  padding: 6px 12px;
-  border-radius: 6px;
-  background-color: #00bcd4;
-  color: white;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.column-button button:hover {
-  background-color: #0097a7;
-}
-
-.floating-column-button {
-  position: absolute;
-  top: 70px;
-  display: flex;
-  gap: 6px;
-  z-index: 20;
-}
-
-.floating-column-button input {
-  padding: 6px;
-  border-radius: 6px;
-  border: 1px solid #bbb;
-  font-size: 0.9rem;
-  width: 160px;
-}
-
-.floating-column-button button {
-  padding: 6px 12px;
-  background-color: #00bcd4;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.floating-column-button button:hover {
-  background-color: #0097a7;
-}
-
-.floating-column-button {
-  position: absolute;
-  top: 10px;
-  left: auto;
-  right: 20px;
-  z-index: 10;
-  display: flex;
-  gap: 6px;
-}
-
-.floating-column-button input {
-  padding: 6px;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  width: 160px;
-}
-
-.floating-column-button button {
-  padding: 6px 12px;
-  background-color: #00bcd4;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.floating-column-button button:hover {
-  background-color: #0097a7;
-}
-
-/* 📐 Zona da rolagem horizontal com posição visível */
-.scroll-zone {
-  position: relative;
-  overflow-x: auto;
-  margin-bottom: 20vh;
-}
-.board {
-  display: flex;
-  gap: 12px;
-  min-width: max-content;
-}
-
-/*excluir coluna*/
-
-.btn.danger {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.btn.danger:hover {
-  background-color: #b02a37;
-}
-
-.column .btn {
-  padding: 6px 14px;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  margin-top: 8px;
-  min-width: 160px;
-}
-
-/* Aplica espaçamento entre os dois botões */
-.column .btn + .btn {
-  margin-left: 10px;
-}
-
-/* Estilo do botão de excluir */
-.btn.danger {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  margin-top: 8px;
-}
-
-.btn.danger:hover {
-  background-color: #b02a37;
-}
-
-/* Estilo do botão de adicionar */
-.btn.secondary {
-  background-color: #343a40;
-  color: white;
-  border: none;
-}
-
-.btn.secondary:hover {
-  background-color: #23272b;
-}
 
 /*ESTILO DA MUDANÇA DE NOME DA COLUNA*/
+.column-title-wrapper { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.column-title { cursor: pointer; transition: all 0.2s ease; }
+.column-title:hover { color: #00bcd4; }
+.edit-title-wrapper { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.title-input { padding: 6px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; width: 140px; }
+.save-title-btn { padding: 6px; font-size: 1rem; background-color: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; }
+.save-title-btn:hover { background-color: #218838; }
+.column-title, .edit-title-wrapper { transition: all 0.2s ease; }
 
-.column-title-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 6px;
+.edit-title-wrapper { 
+  opacity: 0; 
+  animation: fadeIn 0.2s forwards; }
+@keyframes fadeIn { to { opacity: 1; } }
+.card-title-input { padding: 4px; font-size: 1rem; border-radius: 4px; width: 100%; }
+@media (max-width: 768px) { .board { flex-direction: column; overflow-x: hidden; }
+.column { width: 100%; margin-bottom: 16px; }
+.floating-column-button { position: fixed; bottom: 20px; right: 20px; z-index: 100; } }.card-counter { font-size: 0.85rem; font-weight: bold; margin-left: 10px; display: flex; align-items: center; gap: 6px; }
+.card-counter i { color: inherit; }
+/*ESTILO DA BARRA DE PESQUISA*/ .search-bar { width: 10%; padding: 12px 16px; background-color: #f8f9fa; border-bottom: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.search-bar input { width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid #ccc; font-size: 1rem; box-sizing: border-box; }
+/*CUSTOMIZAÇÃO POR USUÁRIO*/ .customization-panel { padding: 12px; border-top: 1px solid #ccc; background: #f4f4f4; } .customization-panel label { display: block; margin-top: 8px; font-weight: bold; } .customization-panel input, .customization-panel select { margin-top: 4px; width: 100%; }
+/*tags*/
+.card-tags { 
+  display: flex; 
+  gap: 6px; 
+  margin: 6px 0; 
+  flex-wrap: wrap; 
 }
 
-.column-title {
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
+.card-tag { 
+  background: #eee; 
+  padding: 4px 8px; 
+  border-radius: 6px; 
+  font-size: 0.8rem; 
+  color: #333; 
+  font-weight: 500; 
+} 
 
-.column-title:hover {
-  color: #00bcd4;
-}
-
-.edit-title-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-
-.title-input {
-  padding: 6px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  width: 140px;
-}
-
-.save-title-btn {
-  padding: 6px;
-  font-size: 1rem;
-  background-color: #28a745;
+.btn-register {
+  background: linear-gradient(135deg, #1e90ff, #007bff);
   color: white;
   border: none;
-  border-radius: 6px;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  border-radius: 8px;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
 }
 
-.save-title-btn:hover {
-  background-color: #218838;
+.btn-register:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
 }
 
-.column-title,
-.edit-title-wrapper {
-  transition: all 0.2s ease;
+.btn-login {
+  background: linear-gradient(135deg, #333, #555);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 8px rgba(50, 50, 50, 0.2);
 }
 
-.edit-title-wrapper {
-  opacity: 0;
-  animation: fadeIn 0.2s forwards;
+.btn-login:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(50, 50, 50, 0.3);
 }
 
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
-}
+.btn-login { 
+  background: linear-gradient(135deg, #333, #555); color: #fff; 
+  border: none; 
+  padding: 12px 24px; 
+  font-size: 1.1rem; 
+  border-radius: 8px; 
+  cursor: pointer; 
+  transition: transform 0.2s ease, box-shadow 0.2s ease; 
+  box-shadow: 0 4px 8px rgba(50, 50, 50, 0.2); } 
+  btn-login:hover { transform: scale(1.05); box-shadow: 0 6px 12px rgba(50, 50, 50, 0.3); 
+  } 
 
-.card-title-input {
-  padding: 4px;
-  font-size: 1rem;
-  border-radius: 4px;
-  width: 100%;
-}
+  
 
-@media (max-width: 768px) {
-  .board {
-    flex-direction: column;
-    overflow-x: hidden;
-  }
 
-  .column {
-    width: 100%;
-    margin-bottom: 16px;
-  }
 
-  .floating-column-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 100;
-  }
-}.card-counter {
-  font-size: 0.85rem;
-  font-weight: bold;
-  margin-left: 10px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
 
-.card-counter i {
-  color: inherit;
-}
 
-/*ESTILO DA BARRA DE PESQUISA*/
-.search-bar {
-  width: 10%;
-  padding: 12px 16px;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #ddd;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.search-bar input {
-  width: 100%;
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  box-sizing: border-box;
-}
-
-/*CUSTOMIZAÇÃO POR USUÁRIO*/
-.customization-panel {
-  padding: 12px;
-  border-top: 1px solid #ccc;
-  background: #f4f4f4;
-}
-.customization-panel label {
-  display: block;
-  margin-top: 8px;
-  font-weight: bold;
-}
-.customization-panel input,
-.customization-panel select {
-  margin-top: 4px;
-  width: 100%;
-}
-
-/*tags*/
-
-.card-tags {
-  display: flex;
-  gap: 6px;
-  margin: 6px 0;
-  flex-wrap: wrap;
-}
-
-.card-tag {
-  background: #eee;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  color: #333;
-  font-weight: 500;
-}
