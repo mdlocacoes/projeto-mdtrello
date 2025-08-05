@@ -14,16 +14,15 @@
   <div class="topbar">
     <div class="logo"><i class="fa-solid fa-layer-group"></i> MD Tasks</div>
 
-    <div class="tag-filter-bar">
-      <button onclick="filterByTag('prioridade')">Prioridade</button>
-      <button onclick="filterByTag('financeiro')">Financeiro</button>
-    </div>
-
     <div class="search-bar">
       <input type="text" id="cardSearch" placeholder="🔍 Buscar cartão..." />
     </div>
 
     <div class="user-section">
+      <div class="user-info">
+        <img id="userPhoto" class="user-photo" src="default-avatar.png" alt="Foto do usuário" onclick="openModal()" />
+        <span id="userName" class="user-name">Usuário</span>
+      </div>
       <button onclick="toggleTheme()" class="theme-button" title="Tema"><i class="fa-solid fa-moon"></i></button>
       <button id="menuToggle" class="theme-button" title="Menu"><i class="fa-solid fa-bars"></i></button>
     </div>
@@ -33,7 +32,7 @@
   <aside id="mobileMenu" class="mobile-menu">
     <button onclick="closeMenu()" class="btn secondary"><i class="fa-solid fa-xmark"></i> Fechar Menu</button>
     <div class="user-box">
-      <span id="userName">Olá, Usuário</span>
+      <span id="userNameSidebar">Olá, Usuário</span>
       <button onclick="logout()" class="logout-button">Sair</button>
     </div>
     <select id="projectSelect">
@@ -43,12 +42,11 @@
     <button onclick="renameProject()" class="btn secondary">Renomear</button>
     <button onclick="deleteProject()" class="btn secondary">Excluir</button>
 
-
     <div class="customization-panel">
-        <label for="bgColorPicker">Cor de fundo:</label>
-        <input type="color" id="bgColorPicker" />
+      <label for="bgColorPicker">Cor de fundo:</label>
+      <input type="color" id="bgColorPicker" />
 
-        <label for="themeToggle">Tema:</label>
+      <label for="themeToggle">Tema:</label>
       <select id="themeToggle">
         <option value="light">Claro</option>
         <option value="dark">Escuro</option>
@@ -56,17 +54,29 @@
     </div>
   </aside>
 
- <!-- 🔧 Scroll-zone agora fixo no rodapé -->
-<div class="scroll-zone">
-  <div id="board" class="board">
-    <!-- colunas dinâmicas -->
+  <!-- 🖼️ Modal flutuante para alterar foto -->
+  <div id="photoModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h3>Alterar Foto</h3>
+      <input type="file" id="photoUpload" accept="image/*" />
+      <button onclick="uploadPhoto()">Salvar</button>
+    </div>
   </div>
 
-  <div class="floating-column-button">
-    <input type="text" id="newColumnName" placeholder="Nova coluna" />
-    <button onclick="addColumn()">➕</button>
+  <!-- 🔧 Scroll-zone agora fixo no rodapé -->
+  <div class="scroll-zone">
+    <div id="board" class="board">
+      <!-- colunas dinâmicas -->
+    </div>
+
+    <div class="add-column-wrapper">
+      <div class="column add-column">
+        <input type="text" id="newColumnName" placeholder="Nova coluna" />
+        <button onclick="addColumn()">➕ Criar Coluna</button>
+      </div>
+    </div>
   </div>
-</div>
 
   <!-- ⚙️ Menu toggle e tema -->
   <script>
@@ -76,9 +86,55 @@
     function closeMenu() {
       document.getElementById("mobileMenu").classList.remove("open");
     }
+
+    // 🔄 Atualiza dados do usuário
+    fetch("/get-user")
+      .then(res => res.json())
+      .then(data => {
+        if (data.username) {
+          document.getElementById("userName").textContent = data.username;
+          document.getElementById("userNameSidebar").textContent = "Olá, " + data.username;
+        }
+        if (data.avatarUrl) {
+          document.getElementById("userPhoto").src = data.avatarUrl;
+        } else {
+          document.getElementById("userPhoto").src = "default-avatar.png";
+        }
+      });
+
+    function openModal() {
+  const modal = document.getElementById("photoModal");
+  modal.classList.add("open");
+}
+
+function closeModal() {
+  const modal = document.getElementById("photoModal");
+  modal.classList.remove("open");
+}
+
+    function uploadPhoto() {
+      const fileInput = document.getElementById("photoUpload");
+      const file = fileInput.files[0];
+      if (file) {
+        const formData = new FormData();
+        formData.append("photo", file);
+        fetch("/upload-photo", {
+          method: "POST",
+          body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.avatarUrl) {
+            document.getElementById("userPhoto").src = data.avatarUrl;
+          }
+          closeModal();
+        });
+      }
+    }
   </script>
 
-  <!-- 📦 Script principal -->
-  <script src="script.js"></script>
+  </body>
+<script src="script.js"></script>
+</html>
 </body>
 </html>

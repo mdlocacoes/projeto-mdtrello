@@ -19,14 +19,19 @@
     <h1><i class="fa-solid fa-user-plus"></i> Cadastro</h1>
     <p class="subtitle">Crie sua conta para começar a organizar suas tarefas com o MD Tasks</p>
 
-    <form method="POST" action="/register" class="form-box">
-      <input type="text" name="username" placeholder="Usuário" required />
-      <input type="password" name="password" placeholder="Senha" required />
-      <button type="submit" class="btn primary"><i class="fa-solid fa-check"></i> Cadastrar</button>
+    <form id="form-cadastro" class="form-box">
+      <input type="text" id="username" name="username" placeholder="Usuário" required />
+      <input type="password" id="password" name="password" placeholder="Senha" required />
+      <button type="button" id="btn-cadastrar" class="btn primary">
+        <i class="fa-solid fa-check"></i> Cadastrar
+      </button>
+      <div id="mensagem-status" style="margin-top: 10px;"></div>
     </form>
 
     <div class="actions">
-      <a href="login.html" class="btn secondary"><i class="fa-solid fa-right-to-bracket"></i> Já tenho conta</a>
+      <a href="login.html" class="btn secondary" id="btn-login-link">
+        <i class="fa-solid fa-right-to-bracket"></i> Já tenho conta
+      </a>
       <a href="/" class="btn secondary"><i class="fa-solid fa-house"></i> Voltar</a>
     </div>
   </div>
@@ -37,15 +42,36 @@
       document.body.classList.add("dark-mode");
     }
 
-    // Exibe mensagem de erro se houver
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("erro") === "1") {
-      const msg = document.createElement("p");
-      msg.textContent = "Usuário já existe. Escolha outro nome.";
-      msg.style.color = "red";
-      msg.style.marginTop = "1rem";
-      document.querySelector(".form-box").appendChild(msg);
-    }
+    // Lógica de cadastro com feedback e modificação dinâmica do botão
+    document.getElementById("btn-cadastrar").addEventListener("click", async () => {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const mensagemEl = document.getElementById("mensagem-status");
+      const btnLoginLink = document.getElementById("btn-login-link");
+
+      try {
+        const res = await fetch("/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+
+        // Exibe mensagem de sucesso ou erro
+        mensagemEl.textContent = data.message;
+        mensagemEl.style.color = data.success ? "green" : "red";
+
+        // Se sucesso, troca botão "Já tenho conta" por "Fazer login"
+        if (data.success) {
+          btnLoginLink.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Fazer login';
+          btnLoginLink.classList.remove("secondary");
+          btnLoginLink.classList.add("primary");
+        }
+      } catch (err) {
+        mensagemEl.textContent = "Erro ao cadastrar.";
+        mensagemEl.style.color = "red";
+      }
+    });
   </script>
 </body>
 </html>
