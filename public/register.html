@@ -1,83 +1,75 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Cadastro - TO DO LIST</title>
-  <meta name="description" content="Crie sua conta para organizar seus quadros pessoais estilo Trello" />
-  <meta name="author" content="Bruno" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro - MD Tasks</title>
 
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#0077cc" />
-  <link rel="icon" type="image/png" href="icons/favicon.png" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Estilo principal -->
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-  <!-- Tema -->
-  <button onclick="toggleTheme()" class="theme-button">🌙 Tema</button>
+<body class="landing-page">
+  <div class="container">
+    <h1><i class="fa-solid fa-user-plus"></i> Cadastro</h1>
+    <p class="subtitle">Crie sua conta para começar a organizar suas tarefas com o MD Tasks</p>
 
-  <!-- Avatar (se estiver logado) -->
-  <div id="avatar">?</div>
+    <form id="form-cadastro" class="form-box">
+      <input type="text" id="username" name="username" placeholder="Usuário" required />
+      <input type="password" id="password" name="password" placeholder="Senha" required />
+      <button type="button" id="btn-cadastrar" class="btn primary">
+        <i class="fa-solid fa-check"></i> Cadastrar
+      </button>
+      <div id="mensagem-status" style="margin-top: 10px;"></div>
+    </form>
 
-  <header><h1>Mini Trello</h1></header>
-
-  <main>
-    <section class="login-section">
-      <form id="registerForm">
-        <h2>Cadastro</h2>
-        <input type="text" id="newUsername" placeholder="Novo Usuário" required />
-        <input type="password" id="newPassword" placeholder="Nova Senha" required />
-        <button type="submit">Cadastrar</button>
-      </form>
-      <div id="registerStatus"></div>
-    </section>
-    <p style="text-align:center;">
-      <a href="login.html">← Já tem conta? Faça login</a>
-    </p>
-  </main>
+    <div class="actions">
+      <a href="login.html" class="btn secondary" id="btn-login-link">
+        <i class="fa-solid fa-right-to-bracket"></i> Já tenho conta
+      </a>
+      <a href="/" class="btn secondary"><i class="fa-solid fa-house"></i> Voltar</a>
+    </div>
+  </div>
 
   <script>
-    function toggleTheme() {
-      document.body.classList.toggle("dark-mode");
-      const theme = document.body.classList.contains("dark-mode") ? "dark" : "light";
-      localStorage.setItem("theme", theme);
+    // Detecta preferência de tema escuro
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.body.classList.add("dark-mode");
     }
 
-    window.onload = () => {
-      const theme = localStorage.getItem("theme");
-      if (theme === "dark") document.body.classList.add("dark-mode");
+    // Lógica de cadastro com feedback e modificação dinâmica do botão
+    document.getElementById("btn-cadastrar").addEventListener("click", async () => {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const mensagemEl = document.getElementById("mensagem-status");
+      const btnLoginLink = document.getElementById("btn-login-link");
 
-      fetch("/get-user")
-        .then(res => res.json())
-        .then(data => {
-          if (data.username) {
-            const avatar = document.getElementById("avatar");
-            avatar.textContent = data.username.charAt(0).toUpperCase();
-            avatar.title = data.username;
-          } else {
-            document.getElementById("avatar").style.display = "none";
-          }
+      try {
+        const res = await fetch("/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password })
         });
-    };
+        const data = await res.json();
 
-    document.getElementById("registerForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const username = document.getElementById("newUsername").value;
-      const password = document.getElementById("newPassword").value;
+        // Exibe mensagem de sucesso ou erro
+        mensagemEl.textContent = data.message;
+        mensagemEl.style.color = data.success ? "green" : "red";
 
-      const res = await fetch("/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
-      });
-
-      const data = await res.json();
-      const status = document.getElementById("registerStatus");
-      status.textContent = data.message;
-      status.style.color = data.success ? "green" : "red";
-
-      if (data.success) {
-        setTimeout(() => window.location.href = "board.html", 1000);
+        // Se sucesso, troca botão "Já tenho conta" por "Fazer login"
+        if (data.success) {
+          btnLoginLink.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Fazer login';
+          btnLoginLink.classList.remove("secondary");
+          btnLoginLink.classList.add("primary");
+        }
+      } catch (err) {
+        mensagemEl.textContent = "Erro ao cadastrar.";
+        mensagemEl.style.color = "red";
       }
     });
   </script>
